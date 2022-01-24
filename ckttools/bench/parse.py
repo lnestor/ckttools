@@ -28,3 +28,6 @@ def parse_from_verilog(filename):
         bench.add_gate(output, type_, inputs)
 
     return bench
+
+def parse_from_bench(filename):
+    raise

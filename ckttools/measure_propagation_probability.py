@@ -5,7 +5,9 @@ from atalanta import (
 )
 import argparse
 from bench.create import create_bench_file
+import bitpattern
 import os
+from propagation import get_propagation_events
 from pyverilog.vparser.parser import parse
 import vast.search
 
@@ -30,6 +32,7 @@ def parse_key_gate_info(filename):
 
             single_key_info = {}
             single_key_info["key_gate_name"] = raw_info[0].strip()
+            single_key_info["circuit_input_net"] = raw_info[1].strip()
             single_key_info["key_gate_output_net"] = raw_info[2].strip()
             single_key_info["key_input_net"] = raw_info[3].strip()
 
@@ -58,4 +61,9 @@ if __name__ == "__main__":
     primary_inputs = get_input_names(args.oracle_filename)
     input_patterns_per_key = get_input_patterns(args.oracle_filename, key_gate_info.keys())
 
-    import pdb; pdb.set_trace()
+    for insertion_net in input_patterns_per_key:
+        seed_input_patterns = input_patterns_per_key[insertion_net]
+        pattern_generator = bitpattern.Generator(seed_input_patterns)
+
+        events = get_propagation_events(key_gate_info[insertion_net], args.locked_filename, primary_inputs, pattern_generator, 2)
+        import pdb; pdb.set_trace()
