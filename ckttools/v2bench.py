@@ -11,7 +11,7 @@ def main():
 
     if args.output is not None:
         with open(args.output, "w") as f:
-            f.write(bench)
+            f.write(str(bench))
     else:
         print(bench)
 

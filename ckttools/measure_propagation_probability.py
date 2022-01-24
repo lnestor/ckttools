@@ -1,14 +1,23 @@
+from atalanta import (
+    create_fault_file,
+    parse_test_file,
+    run_atalanta
+)
 import argparse
+from bench.create import create_bench_file
+import os
 from pyverilog.vparser.parser import parse
-
 import vast.search
-from atalanta import create_fault_file
 
 def get_args():
     parser = argparse.ArgumentParser(description="Calculate p(prop) for a circuit")
     parser.add_argument("locked_filename", help="The locked circuit file")
     parser.add_argument("oracle_filename", help="The oracle file")
     return parser.parse_args()
+
+def cleanup(*filenames):
+    for filename in filenames:
+        os.remove(filename)
 
 def parse_key_gate_info(filename):
     with open(filename) as f:
@@ -35,12 +44,12 @@ def get_input_names(filename):
 
 def get_input_patterns(filename, net_names):
     create_fault_file("tmp/oracle.flt", net_names)
-    create_bench_file("oracle.bench", oracle_filename)
+    create_bench_file("tmp/oracle.bench", filename)
 
-    run_atalanta("oracle.bench", "oracle.flt", "oracle.log")
-    input_patterns = parse_test_file("oracle.test")
+    run_atalanta("tmp/oracle.bench", "tmp/oracle.flt", "tmp/oracle.log", "tmp/oracle.test")
+    input_patterns = parse_test_file("tmp/oracle.test")
 
-    cleanup("oracle.flt", "oracle.bench", "oracle.log", "oracle.test")
+    cleanup("tmp/oracle.flt", "tmp/oracle.bench", "tmp/oracle.log", "tmp/oracle.test")
     return input_patterns
 
 if __name__ == "__main__":
