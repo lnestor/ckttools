@@ -2,6 +2,7 @@ import argparse
 from pyverilog.vparser.parser import parse
 
 import vast.search
+from atalanta import create_fault_file
 
 def get_args():
     parser = argparse.ArgumentParser(description="Calculate p(prop) for a circuit")
@@ -32,9 +33,20 @@ def get_input_names(filename):
     ast, _ = parse([filename], debug=False)
     return vast.search.get_input_names(ast.children()[0].children()[0])
 
+def get_input_patterns(filename, net_names):
+    create_fault_file("tmp/oracle.flt", net_names)
+    create_bench_file("oracle.bench", oracle_filename)
+
+    run_atalanta("oracle.bench", "oracle.flt", "oracle.log")
+    input_patterns = parse_test_file("oracle.test")
+
+    cleanup("oracle.flt", "oracle.bench", "oracle.log", "oracle.test")
+    return input_patterns
+
 if __name__ == "__main__":
     args = get_args()
     key_gate_info = parse_key_gate_info(args.locked_filename)
     primary_inputs = get_input_names(args.oracle_filename)
+    input_patterns_per_key = get_input_patterns(args.oracle_filename, key_gate_info.keys())
 
     import pdb; pdb.set_trace()

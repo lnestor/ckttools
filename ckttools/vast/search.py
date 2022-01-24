@@ -69,5 +69,8 @@ def get_ilist_inputs(ilist):
 def get_ilist_input(ilist, index):
     return ilist.children()[0].children()[index + 1].children()[0].name
 
+def get_ilist_type(ilist):
+    return ilist.module
+
 def get_moddef(ast):
     return ast.children()[0].children()[0]
