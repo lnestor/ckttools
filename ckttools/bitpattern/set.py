@@ -21,10 +21,21 @@ class Set:
         return Set(intersections)
 
     def pattern_length(self):
-        return self.patterns[0].pattern_length()
+        return len(self.patterns[0])
 
-    def pattern_space_size(self):
+    def total_possible_patterns(self):
         return 2**self.pattern_length()
 
     def count(self):
         return sum(p.count() for p in self.patterns)
+
+    def __eq__(self, other):
+        for pattern in self.patterns:
+            if pattern not in other.patterns:
+                return False
+
+        for pattern in other.patterns:
+            if pattern not in self.patterns:
+                return False
+
+        return True
