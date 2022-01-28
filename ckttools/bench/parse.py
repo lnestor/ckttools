@@ -1,6 +1,6 @@
 from .bench import Bench
 from pyverilog.vparser.parser import parse
-from vast.search import (
+from ..vast.search import (
     get_input_names,
     get_output_names,
     get_ilists,
