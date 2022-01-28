@@ -1,7 +1,7 @@
 import pyverilog.vparser.ast as vast
 
 def get_wire_names(moddef):
-    wire_nodes = get_decl_nodes(moddef, vast.Wire)
+    wire_nodes = _get_decl_nodes(moddef, vast.Wire)
     return [n.name for n in wire_nodes]
 
 def get_primary_input_names(moddef):
@@ -13,25 +13,25 @@ def get_key_input_names(moddef):
     return [name for name in input_names if "key" in name]
 
 def get_input_names(moddef):
-    input_nodes = get_decl_nodes(moddef, vast.Input)
+    input_nodes = _get_decl_nodes(moddef, vast.Input)
     return [n.name for n in input_nodes]
 
 def get_output_names(moddef):
-    output_nodes = get_decl_nodes(moddef, vast.Output)
+    output_nodes = _get_decl_nodes(moddef, vast.Output)
     return [n.name for n in output_nodes]
 
-def get_decl_nodes(moddef, cls):
+def _get_decl_nodes(moddef, cls):
     decls = [n for n in moddef.children() if len(n.children()) > 0 and isinstance(n.children()[0], cls)]
     nodes = [child for node in decls for child in node.children()]
     return nodes
 
 def find_last_input(moddef):
-    return find_last_decl(moddef, vast.Input)
+    return _find_last_decl(moddef, vast.Input)
 
 def find_last_wire(moddef):
-    return find_last_decl(moddef, vast.Wire)
+    return _find_last_decl(moddef, vast.Wire)
 
-def find_last_decl(moddef, cls):
+def _find_last_decl(moddef, cls):
     index = 0
     for idx in range(len(moddef.children())):
         if len(moddef.children()[idx].children()) > 0 and isinstance(moddef.children()[idx].children()[0], cls):
