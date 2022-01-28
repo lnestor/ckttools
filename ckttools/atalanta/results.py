@@ -1,12 +1,12 @@
 import collections
 
-def is_start_of_net(line):
+def _is_start_of_net(line):
     return line[0] != " "
 
-def parse_net_name(line):
+def _parse_net_name(line):
     return line.split(" ")[0]
 
-def parse_pattern(line):
+def _parse_pattern(line):
     pattern = line.split(":")[1]
     pattern = pattern.split(" ")[1]
     return pattern
@@ -17,11 +17,11 @@ def parse_test_file(filename):
 
     patterns = collections.defaultdict(list)
     for line in lines[9:]:
-        if is_start_of_net(line):
-            current_net_name = parse_net_name(line)
+        if _is_start_of_net(line):
+            current_net_name = _parse_net_name(line)
 
         else:
-            pattern = parse_pattern(line)
+            pattern = _parse_pattern(line)
             patterns[current_net_name].append(pattern)
 
     return dict(patterns)
