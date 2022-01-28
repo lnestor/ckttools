@@ -48,6 +48,11 @@ class Events:
         for input_pattern in self.events:
             key_patterns = self.events[input_pattern]
 
+            # TODO: skip if input pattern is not contained in some of self, others
+            #       this is a solution only for others[0]
+            if input_pattern not in others[0].events:
+                continue
+
             total_intersection = others[0].events[input_pattern]
             for other in others[1:]:
                 total_intersection = total_intersection.intersection(other.events[input_pattern])
