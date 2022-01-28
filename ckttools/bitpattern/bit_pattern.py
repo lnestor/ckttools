@@ -40,14 +40,17 @@ class BitPattern:
 
         return BitPattern(intersect_pattern)
 
-    def pattern_length(self):
-        return len(self.pattern_str)
-
     def count(self):
         if len(self.pattern_str) == 0:
             return 0
         else:
             return 2**self.pattern_str.count("x")
 
+    def __len__(self):
+        return len(self.pattern_str)
+
     def __str__(self):
         return self.pattern_str
+
+    def __eq__(self, other):
+        return self.pattern_str == other.pattern_str
