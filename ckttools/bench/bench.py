@@ -36,7 +36,7 @@ class Bench:
             self.inputs.remove(net_name)
         elif net_name in self.gates:
             for input_ in self.gates[net_name].inputs:
-                self._remove_gates_recursive(input_)
+                self.remove_gates_recursive(input_)
 
             del self.gates[net_name]
 
