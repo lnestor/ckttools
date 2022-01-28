@@ -1,4 +1,3 @@
-from .floating import find_floating_nets
 from .gate import Gate
 import os
 
