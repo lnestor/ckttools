@@ -29,3 +29,12 @@ def test_intersection():
     assert pattern1.intersection(pattern2) == expected
     assert pattern2.intersection(pattern1) == expected
 
+def test_equals_when_not_equals():
+    pattern1 = BitPattern("101")
+    pattern2 = BitPattern("1xx")
+    assert not pattern1 == pattern2
+
+def test_equals_when_not_equals():
+    pattern1 = BitPattern("1x1")
+    pattern2 = BitPattern("1x1")
+    assert pattern1 == pattern2
