@@ -6,6 +6,11 @@ from atalanta import (
 from bench.parse import parse_from_verilog
 import copy
 from .events import Events
+import os
+
+def cleanup(*filenames):
+    for filename in filenames:
+        os.remove(filename)
 
 def remove_duplicates(l):
     return list(set(l))
@@ -35,17 +40,28 @@ def get_key_patterns(key_gate_info, input_pattern, primary_inputs, original_benc
     create_test_bench_file(key_gate_info, input_pattern, primary_inputs, original_bench, bench_filename)
     run_atalanta(bench_filename, fault_filename, log_filename, test_filename)
 
-    key_patterns = parse_test_file(test_filename)[key_gate_info["key_gate_output_net"]]
-    key_patterns = remove_duplicates([p[0:-1] for p in key_patterns])
+    key_patterns = parse_test_file(test_filename)
+
+    if len(key_patterns) > 0:
+        key_patterns = key_patterns[key_gate_info["key_gate_output_net"]]
+        key_patterns = remove_duplicates([p[0:-1] for p in key_patterns])
+    else:
+        print("Warning: no propagating key patterns found for gate %s, input %s" % (key_gate_info["key_gate_name"], input_pattern))
+
+    cleanup(bench_filename, log_filename, test_filename)
     return key_patterns
 
 def get_propagation_events(key_gate_info, locked_filename, primary_inputs, pattern_generator, num_samples):
-    events = Events()
+    fault_filename = "tmp/%s.flt" % key_gate_info["key_gate_name"]
+    create_fault_file(fault_filename, [key_gate_info["key_gate_output_net"]])
     original_bench = parse_from_verilog(locked_filename)
-    create_fault_file("tmp/%s.flt" % key_gate_info["key_gate_name"], [key_gate_info["key_gate_output_net"]])
+    events = Events()
 
     for i, input_pattern in enumerate(pattern_generator.sample(num_samples)):
         key_patterns = get_key_patterns(key_gate_info, input_pattern, primary_inputs, original_bench, i)
-        events.add(input_pattern, key_patterns)
 
+        if len(key_patterns) > 0:
+            events.add(input_pattern, key_patterns)
+
+    cleanup(fault_filename)
     return events
