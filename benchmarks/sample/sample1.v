@@ -1,9 +1,11 @@
-module sample1(IN1, IN2, IN3, OUT1, OUT2);
+module sample2(in1, in2, in3, in4, out1, out2);
 
-input IN1, IN2, IN3;
-output OUT1, OUT2;
+input in1, in2, in3, in4;
+output out1, out2;
+wire w1;
 
-and AND1 (OUT1, IN1, IN2);
-and AND2 (OUT2, IN2, IN3);
+and AND1 (out1, in1, in2);
+or OR1 (w1, in2, in3);
+and AND2 (out2, w1, in4);
 
 endmodule
