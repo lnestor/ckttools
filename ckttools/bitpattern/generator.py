@@ -5,15 +5,14 @@ class Generator:
         self.seeds = seed_patterns
 
     def sample(self, number_samples):
-        self.number = number_samples
-        # TODO: Look if number_samples > len(patterns)
+        self.number = min(number_samples, self.size())
         return iter(self)
 
     def generate(self):
         pattern = seed = random.choice(self.seeds)
 
         for i in range(seed.count("x")):
-            pattern = pattern.replace("x", random.choice(["0", "1"]))
+            pattern = pattern.replace("x", random.choice(["0", "1"]), 1)
 
         return pattern
 

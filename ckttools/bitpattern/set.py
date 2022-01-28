@@ -18,7 +18,7 @@ class Set:
                 if single_intersection.count() > 0:
                     intersections.append(single_intersection)
 
-        return BitPatternSet(intersections)
+        return Set(intersections)
 
     def pattern_length(self):
         return self.patterns[0].pattern_length()
