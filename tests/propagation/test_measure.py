@@ -1,5 +1,7 @@
 from ckttools.bench.bench import Bench
-from ckttools.propagation.measure import create_test_bench_file
+from ckttools.bench.parse import parse_from_verilog
+from ckttools.propagation.measure import create_test_bench_file, get_key_patterns
+from tests.fixtures.fixtures import get_fixture_path
 import pytest
 
 ORIGINAL_BENCH_CONTENTS = """
@@ -80,4 +82,25 @@ def test_create_test_bench_file(tmp_path, original_bench):
 
     created_bench_contents = output_filename.read_text()
     assert created_bench_contents == EXPECTED_BENCH_CONTENTS
+
+def test_get_key_patterns_simple(tmp_path):
+    key_gate_info = {
+        "key_gate_name": "XOR1",
+        "key_gate_output_net": "w1",
+        "key_input_net": "keyIn0_0",
+        "circuit_input_net": "in1"
+    }
+    input_pattern = "01"
+    primary_inputs = ["in1", "in2"]
+    original_bench = parse_from_verilog(get_fixture_path("simple_propagation_locked"))
+    fault_filename = tmp_path / "example.flt"
+    fault_filename.write_text("w1 /0\nw1 /1\n")
+    iteration = 0
+
+    key_patterns = get_key_patterns(key_gate_info, input_pattern, primary_inputs, original_bench, fault_filename, iteration)
+
+    assert key_patterns == ["1"]
+
+def test_get_key_patterns_branching(tmp_path):
+    raise
 
