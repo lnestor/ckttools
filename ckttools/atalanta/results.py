@@ -19,7 +19,6 @@ def parse_test_file(filename):
     for line in lines[9:]:
         if _is_start_of_net(line):
             current_net_name = _parse_net_name(line)
-
         else:
             pattern = _parse_pattern(line)
             patterns[current_net_name].append(pattern)
