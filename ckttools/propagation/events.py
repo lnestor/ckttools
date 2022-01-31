@@ -1,4 +1,4 @@
-import bitpattern
+from ..bitpattern import Set
 
 class Events:
     """
