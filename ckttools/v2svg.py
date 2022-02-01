@@ -17,9 +17,9 @@ def main():
 
     subprocess.run(["yosys", "-p", 'prep -top %s; write_json output.json' % module_name, args.verilog_file])
     subprocess.run(["netlistsvg", "output.json", "-o", output_file])
-    subprocess.run(["rm", "output.json"])
+    rslt = subprocess.run(["rm", "output.json"], capture_output=True, text=True)
 
-    if args.open:
+    if args.open and len(rslt.stderr) == 0:
         subprocess.run(["open", output_file])
 
 if __name__ == "__main__":
