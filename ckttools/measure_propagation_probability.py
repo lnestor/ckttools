@@ -1,15 +1,15 @@
-from atalanta import (
+from .atalanta import (
     create_fault_file,
     parse_test_file,
     run_atalanta
 )
 import argparse
-from bench.create import create_bench_file
-import bitpattern
+from .bench.create import create_bench_file
+from . import bitpattern
 import os
-from propagation import get_propagation_events
+from .propagation import get_propagation_events
 from pyverilog.vparser.parser import parse
-import vast.search
+from .vast import search
 
 def get_args():
     parser = argparse.ArgumentParser(description="Calculate p(prop) for a circuit")
@@ -36,8 +36,8 @@ def parse_key_gate_info(filename):
             single_key_info["key_gate_output_net"] = raw_info[2].strip()
             single_key_info["key_input_net"] = raw_info[3].strip()
 
-            circuit_input_net = raw_info[1].strip()
-            key_gate_info[circuit_input_net] = single_key_info
+            original_circuit_net = raw_info[4].strip()
+            key_gate_info[original_circuit_net] = single_key_info
 
     return key_gate_info
 
@@ -61,9 +61,12 @@ if __name__ == "__main__":
     primary_inputs = get_input_names(args.oracle_filename)
     input_patterns_per_key = get_input_patterns(args.oracle_filename, key_gate_info.keys())
 
+    events_per_key = {}
     for insertion_net in input_patterns_per_key:
         seed_input_patterns = input_patterns_per_key[insertion_net]
         pattern_generator = bitpattern.Generator(seed_input_patterns)
 
-        events = get_propagation_events(key_gate_info[insertion_net], args.locked_filename, primary_inputs, pattern_generator, 2)
-        import pdb; pdb.set_trace()
+        events = get_propagation_events(key_gate_info[insertion_net], args.locked_filename, primary_inputs, pattern_generator, 100)
+        events_per_key[key_gate_info[insertion_net]["key_input_net"]] = events
+
+    import pdb; pdb.set_trace()

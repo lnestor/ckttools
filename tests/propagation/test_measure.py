@@ -85,10 +85,10 @@ def test_create_test_bench_file(tmp_path, original_bench):
 
 def test_get_key_patterns_simple(tmp_path):
     key_gate_info = {
-        "key_gate_name": "XOR1",
+        "key_gate_name": "KeyGate1",
         "key_gate_output_net": "w1",
         "key_input_net": "keyIn0_0",
-        "circuit_input_net": "in1"
+        "circuit_input_net": "w3"
     }
     original_bench = parse_from_verilog(get_fixture_path("simple_propagation_locked"))
     fault_filename = tmp_path / "example.flt"
@@ -102,13 +102,13 @@ def test_get_key_patterns_branching(tmp_path):
         "key_gate_name": "KeyGate2",
         "key_gate_output_net": "w2",
         "key_input_net": "keyIn0_1",
-        "circuit_input_net": "in2"
+        "circuit_input_net": "w3"
     }
     original_bench = parse_from_verilog(get_fixture_path("branching_propagation_locked"))
     fault_filename = tmp_path / "example.flt"
     fault_filename.write_text("w2 /0\nw2 /1\n")
 
-    key_patterns = get_key_patterns(key_gate_info, "11", ["in1", "in2"], original_bench, fault_filename, 0)
+    key_patterns = get_key_patterns(key_gate_info, "111", ["in1", "in2", "in3"], original_bench, fault_filename, 0)
     assert set(key_patterns) == set(["01", "1x"])
 
 def test_get_key_patterns_single_branch(tmp_path):
