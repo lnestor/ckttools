@@ -48,3 +48,25 @@ def test_run_atalanta_with_fault_error(tmp_path):
 
     with pytest.raises(RuntimeError):
         run_atalanta(bench_file, fault_file, log_file, output_file)
+
+def test_run_atalanta_with_missing_bench_file(tmp_path):
+    bench_file = tmp_path / "example.bench"
+    fault_file = tmp_path / "example.flt"
+    log_file = tmp_path / "example.log"
+    output_file = tmp_path / "example.test"
+
+    fault_file.write_text(GOOD_FAULT)
+
+    with pytest.raises(RuntimeError):
+        run_atalanta(bench_file, fault_file, log_file, output_file)
+
+def test_run_atalanta_with_missing_fault_file(tmp_path):
+    bench_file = tmp_path / "example.bench"
+    fault_file = tmp_path / "example.flt"
+    log_file = tmp_path / "example.log"
+    output_file = tmp_path / "example.test"
+
+    bench_file.write_text(GOOD_BENCH)
+
+    with pytest.raises(RuntimeError):
+        run_atalanta(bench_file, fault_file, log_file, output_file)
