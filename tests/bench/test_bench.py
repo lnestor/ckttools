@@ -84,3 +84,15 @@ def test_add_buffer_on_output():
     bench.add_buffer("output1")
     assert "output1__buffer = buf(output1)" in str(bench)
     assert "OUTPUT(output1__buffer)" in str(bench)
+
+def test_add_buffer_on_branch():
+    bench = Bench("tile_file")
+    bench.add_input("input1")
+    bench.add_output("output1")
+    bench.add_output("output2")
+    bench.add_gate("output1", "not", ["input1"])
+    bench.add_gate("output2", "not", ["input1"])
+
+    bench.add_buffer("input1", "output2")
+    assert "output1 = not(input1)" in str(bench)
+    assert "output2 = not(input1__buffer)" in str(bench)
