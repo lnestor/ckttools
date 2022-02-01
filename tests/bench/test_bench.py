@@ -70,6 +70,17 @@ def test_add_buffer():
     bench.add_gate("w1", "not", ["input1"])
     bench.add_gate("output1", "not", ["w1"])
 
-    bench.add_buffer("w1")
+    net = bench.add_buffer("w1")
     assert "w1__buffer = buf(w1)" in str(bench)
     assert "output1 = not(w1__buffer)" in str(bench)
+    assert net == "w1__buffer"
+
+def test_add_buffer_on_output():
+    bench = Bench("test_file")
+    bench.add_input("input1")
+    bench.add_output("output1")
+    bench.add_gate("output1", "not", ["input1"])
+
+    bench.add_buffer("output1")
+    assert "output1__buffer = buf(output1)" in str(bench)
+    assert "OUTPUT(output1__buffer)" in str(bench)
