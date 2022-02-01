@@ -62,3 +62,14 @@ def test_apply_input_pattern(complex_bench):
     assert "w2 = or(w1, TRUE_CONST)" in str(complex_bench)
     assert "TRUE_CONST = nand(TF_CONST, TF_CONST_NOT)" in str(complex_bench)
     assert "FALSE_CONST = and(TF_CONST, TF_CONST_NOT)" in str(complex_bench)
+
+def test_add_buffer():
+    bench = Bench("test_file")
+    bench.add_input("input1")
+    bench.add_output("output1")
+    bench.add_gate("w1", "not", ["input1"])
+    bench.add_gate("output1", "not", ["w1"])
+
+    bench.add_buffer("w1")
+    assert "w1__buffer = buf(w1)" in str(bench)
+    assert "output1 = not(w1__buffer)" in str(bench)

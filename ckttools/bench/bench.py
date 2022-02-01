@@ -23,6 +23,17 @@ class Bench:
         gate = Gate(output, gate_type, inputs)
         self.gates[output] = gate
 
+    def add_buffer(self, net):
+        output = net + "__buffer"
+
+        for gate_output in self.gates:
+            gate = self.gates[gate_output]
+            gate.inputs = [output if _input == net else _input for _input in gate.inputs]
+
+        gate = Gate(output, "buf", [net])
+        self.gates[output] = gate
+
+
     def remove_inputs(self, inputs):
         self.inputs = [i for i in self.inputs if i not in inputs]
 
