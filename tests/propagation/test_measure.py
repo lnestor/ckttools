@@ -122,5 +122,5 @@ def test_get_key_patterns_single_branch(tmp_path):
     fault_filename = tmp_path / "example.flt"
     fault_filename.write_text("w2 /0\nw2 /1\n")
 
-    key_patterns = get_key_patterns(key_gate_info, "11", ["in1", "in2"], original_bench, fault_filename, 0)
+    key_patterns = get_key_patterns(key_gate_info, "111", ["in1", "in2", "in3"], original_bench, fault_filename, 0)
     assert set(key_patterns) == set(["x1"])
