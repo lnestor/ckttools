@@ -1,9 +1,9 @@
-from ..atalanta import (
+from atalanta import (
     create_fault_file,
     parse_test_file,
     run_atalanta
 )
-from ..bench.parse import parse_from_verilog
+from bench.parse import parse_from_verilog
 import copy
 from .events import Events
 import os

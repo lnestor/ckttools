@@ -1,7 +1,7 @@
 from functools import reduce
 from itertools import combinations
 import numpy as np
-from ..vast.search import get_ilist_output, get_ilist_type, get_ilist_inputs
+from vast.search import get_ilist_output, get_ilist_type, get_ilist_inputs
 
 def _calculate_or_probability(input_probs):
     parity = 1
