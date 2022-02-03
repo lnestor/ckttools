@@ -1,15 +1,15 @@
-from .atalanta import (
+from atalanta import (
     create_fault_file,
     parse_test_file,
     run_atalanta
 )
 import argparse
-from .bench.parse import parse_from_verilog
-from . import bitpattern
+from bench.parse import parse_from_verilog
+import bitpattern
 import os
-from .propagation import get_propagation_events
+from propagation import get_propagation_events
 from pyverilog.vparser.parser import parse
-from .vast import search
+from vast import search
 
 def get_args():
     parser = argparse.ArgumentParser(description="Calculate p(prop) for a circuit")
