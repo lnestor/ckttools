@@ -1,9 +1,9 @@
 // Propagation data:
 // gate name, circuit input name, output name, key input name, original circuit net name
-// [LN]: KeyGate1, in1, g1, keyIn0_0, in1
-// [LN]: KeyGate2, g2, out1, keyIn0_1, out1
-// [LN]: KeyGate3, in2, g3, keyIn0_2, in2
-// [LN]: KeyGate4, in4, g4, keyIn0_3, in4
+// [KeyGate]: KeyGate1, in1, g1, keyIn0_0, in1
+// [KeyGate]: KeyGate2, g2, out1, keyIn0_1, out1
+// [KeyGate]: KeyGate3, in2, g3, keyIn0_2, in2
+// [KeyGate]: KeyGate4, in4, g4, keyIn0_3, in4
 module sample2(in1, in2, in3, in4, out1, out2, keyIn0_0, keyIn0_1, keyIn0_2, keyIn0_3);
 
 input in1, in2, in3, in4, keyIn0_0, keyIn0_1, keyIn0_2, keyIn0_3;

@@ -1,4 +1,5 @@
 import pyverilog.vparser.ast as vast
+from pyverilog.vparser.parser import parse
 
 def get_wire_names(moddef):
     wire_nodes = _get_decl_nodes(moddef, vast.Wire)
@@ -59,6 +60,10 @@ def get_ilists_from_input(moddef, input_):
 def get_ilists(moddef):
     return list(filter(lambda x: isinstance(x, vast.InstanceList), moddef.children()))
 
+def get_ilist_map(moddef):
+    ilists = get_ilists(moddef)
+    return {get_ilist_output(ilist): ilist for ilist in ilists}
+
 def get_ilist_output(ilist):
     return ilist.children()[0].children()[0].children()[0].name
 
@@ -74,3 +79,7 @@ def get_ilist_type(ilist):
 
 def get_moddef(ast):
     return ast.children()[0].children()[0]
+
+def get_moddef_from_verilog(verilog):
+    ast, _ = parse([verilog], debug=False)
+    return get_moddef(ast)
