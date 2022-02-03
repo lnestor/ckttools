@@ -43,5 +43,4 @@ def _calculate(ilist_map, net):
 
 def calculate_flip_probability(ilists, net):
     ilist_map = {get_ilist_output(ilist): ilist for ilist in ilists}
-
     return _calculate(ilist_map, net)
