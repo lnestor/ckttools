@@ -1,5 +1,5 @@
-// [LN]: KeyGate1, w3, w1, keyIn0_0, w3
-// [LN]: KeyGate2, w2, out1, keyIn0_1, out1
+// [KeyGate]: KeyGate1, w3, w1, keyIn0_0, w3
+// [KeyGate]: KeyGate2, w2, out1, keyIn0_1, out1
 module simple_propagation(in1, in2, out1, keyIn0_0, keyIn0_1);
 
 input in1, in2, keyIn0_0, keyIn0_1;
