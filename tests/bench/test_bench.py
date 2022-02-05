@@ -63,6 +63,10 @@ def test_remove_gates_recursive(complex_bench):
     assert "w1 = and(input1, input2)" not in str(complex_bench)
     assert "w2 = or(w1, input3)" not in str(complex_bench)
 
+def test_remove_gates_recursive_preserving_inputs(complex_bench):
+    complex_bench.remove_gates_recursive("w2", preserve_inputs=True)
+    assert "INPUT(input1)" in str(complex_bench)
+
 def test_apply_input_pattern(complex_bench):
     complex_bench.apply_input_pattern({"input1": "1", "input2": "0", "input3": "1"})
     assert "w1 = and(TRUE_CONST, FALSE_CONST)" in str(complex_bench)

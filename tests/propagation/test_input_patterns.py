@@ -43,3 +43,14 @@ def test_get_input_patterns_input_fault():
 
     # Dont current have a way to combine to to 'dont care' values
     assert set(input_patterns["KeyGate1"]) == set(["11xx", "10xx", "0101", "0001"])
+
+def test_get_input_patterns_primary_inputs_used_in_key():
+    locked_filename = get_fixture_path("primary_inputs_key_locked")
+    moddef = get_moddef_from_verilog(locked_filename)
+    metadata = parse_metadata(locked_filename)
+
+    input_patterns = get_input_patterns(moddef, metadata)
+
+    # Dont current have a way to combine to to 'dont care' values
+    assert set(input_patterns["KeyGate0"]) == set(["0", "1"])
+

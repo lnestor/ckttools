@@ -5,6 +5,7 @@ from atalanta import (
 )
 from bench.parse import parse_from_moddef
 import os
+from vast.search import get_key_input_names
 
 def cleanup(*filenames):
     for filename in filenames:
@@ -12,10 +13,12 @@ def cleanup(*filenames):
 
 def create_oracle_bench_file(moddef, bench_filename, key_metadata):
     bench = parse_from_moddef(moddef)
+    key_inputs = get_key_input_names(moddef)
+    bench.remove_inputs(key_inputs)
 
     for key_gate_name in key_metadata:
         m = key_metadata[key_gate_name]
-        bench.remove_gates_recursive(m["key_input_net"])
+        bench.remove_gates_recursive(m["key_input_net"], preserve_inputs=True)
         bench.remove_gate(m["output_net"])
         bench.add_gate(m["output_net"], "buf", [m["circuit_input_net"]])
 

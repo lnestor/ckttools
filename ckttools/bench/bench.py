@@ -53,14 +53,14 @@ class Bench:
     def remove_gate(self, gate_output):
         del self.gates[gate_output]
 
-    def remove_gates_recursive(self, gate_output):
+    def remove_gates_recursive(self, gate_output, preserve_inputs=False):
         net_name = gate_output
 
-        if net_name in self.inputs:
+        if net_name in self.inputs and not preserve_inputs:
             self.inputs.remove(net_name)
         elif net_name in self.gates:
             for input_ in self.gates[net_name].inputs:
-                self.remove_gates_recursive(input_)
+                self.remove_gates_recursive(input_, preserve_inputs=preserve_inputs)
 
             del self.gates[net_name]
 
