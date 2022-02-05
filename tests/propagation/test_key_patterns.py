@@ -70,7 +70,7 @@ def original_bench():
 def test_create_test_bench_file(tmp_path, original_bench):
     key_gate_info = {
         "key_input_net": "key_out",
-        "key_gate_output_net": "w1",
+        "output_net": "w1",
         "circuit_input_net": "in1"
     }
 
@@ -86,7 +86,7 @@ def test_create_test_bench_file(tmp_path, original_bench):
 def test_get_key_patterns_simple(tmp_path):
     key_gate_info = {
         "key_gate_name": "KeyGate1",
-        "key_gate_output_net": "w1",
+        "output_net": "w1",
         "key_input_net": "keyIn0_0",
         "circuit_input_net": "w3"
     }
@@ -100,7 +100,7 @@ def test_get_key_patterns_simple(tmp_path):
 def test_get_key_patterns_branching(tmp_path):
     key_gate_info = {
         "key_gate_name": "KeyGate2",
-        "key_gate_output_net": "w2",
+        "output_net": "w2",
         "key_input_net": "keyIn0_1",
         "circuit_input_net": "w3"
     }
@@ -114,7 +114,7 @@ def test_get_key_patterns_branching(tmp_path):
 def test_get_key_patterns_single_branch(tmp_path):
     key_gate_info = {
         "key_gate_name": "KeyGate2",
-        "key_gate_output_net": "w2",
+        "output_net": "w2",
         "key_input_net": "keyIn0_1",
         "circuit_input_net": "in2"
     }

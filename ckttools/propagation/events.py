@@ -1,4 +1,4 @@
-from bitpattern import Set
+import bitpattern
 
 class Events:
     """
@@ -37,7 +37,11 @@ class Events:
 
         for input_pattern in self.events:
             key_patterns = self.events[input_pattern]
-            pprops.append(key_patterns.count() / key_patterns.pattern_space_size())
+
+            if key_patterns.count() == 0:
+                pprops.append(1)
+            else:
+                pprops.append(key_patterns.count() / key_patterns.total_possible_patterns())
 
         return sum(pprops) / len(pprops)
 
