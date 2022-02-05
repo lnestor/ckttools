@@ -12,6 +12,9 @@ from vast.search import (
 def parse_from_verilog(filename):
     ast, _ = parse([filename], debug=False)
     moddef = ast.children()[0].children()[0]
+    return parse_from_moddef(moddef)
+
+def parse_from_moddef(moddef):
     bench = Bench(moddef.name)
 
     for input_name in get_input_names(moddef):
@@ -28,6 +31,7 @@ def parse_from_verilog(filename):
         bench.add_gate(output, type_, inputs)
 
     return bench
+
 
 def parse_from_bench(filename):
     raise

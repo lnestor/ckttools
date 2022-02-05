@@ -1,4 +1,5 @@
-from ckttools.bench.parse import parse_from_verilog
+from ckttools.bench.parse import parse_from_moddef, parse_from_verilog
+from ckttools.vast.search import get_moddef_from_verilog
 
 VERILOG = """
 module sample(in1, in2, out1);
@@ -25,3 +26,9 @@ out1 = buf(w1)
 def test_parse_from_verilog():
     bench = parse_from_verilog(VERILOG)
     assert str(bench) == BENCH
+
+def test_parse_from_moddef():
+    moddef = get_moddef_from_verilog(VERILOG)
+    bench = parse_from_moddef(moddef)
+    assert str(bench) == BENCH
+
