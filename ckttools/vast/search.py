@@ -68,11 +68,17 @@ def get_ilist_output(ilist):
     return ilist.children()[0].children()[0].children()[0].name
 
 def get_ilist_inputs(ilist):
-    children = ilist.children()[0].children()[1:]
-    return [c.children()[0].name for c in children]
+    num_inputs = len(ilist.children()[0].children()[1:])
+    return [get_ilist_input(ilist, i) for i in range(num_inputs)]
 
 def get_ilist_input(ilist, index):
-    return ilist.children()[0].children()[index + 1].children()[0].name
+    input_obj = ilist.children()[0].children()[index + 1].children()[0]
+    if isinstance(input_obj, vast.Identifier):
+        return input_obj.name
+    elif isinstance(input_obj, vast.IntConst):
+        return int(input_obj.value)
+    else:
+        raise
 
 def get_ilist_type(ilist):
     return ilist.module

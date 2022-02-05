@@ -32,6 +32,13 @@ def ilist():
     instance = vast.Instance("and", "TEST_AND", (out_port, *in_ports), ())
     return vast.InstanceList("and", (), (instance,))
 
+@pytest.fixture(scope="module")
+def ilist_with_const():
+    out_port = vast.PortArg(None, vast.Identifier("output"))
+    in_port = vast.PortArg(None, vast.IntConst("0"))
+    instance = vast.Instance("not", "TEST_NOT", (out_port, in_port), ())
+    return vast.InstanceList("not", (), (instance,))
+
 def test_get_wire_names(moddef):
     assert get_wire_names(moddef) == ["w1", "w2", "w3"]
 
@@ -79,8 +86,14 @@ def test_get_ilist_output(ilist):
 def test_get_ilist_inputs(ilist):
     assert get_ilist_inputs(ilist) == ["input0", "input1"]
 
+def test_get_ilist_inputs_with_const(ilist_with_const):
+    assert get_ilist_inputs(ilist_with_const) == [0]
+
 def test_get_ilist_input(ilist):
     assert get_ilist_input(ilist, 0) == "input0"
+
+def test_get_ilist_input_with_const(ilist_with_const):
+    assert get_ilist_input(ilist_with_const, 0) == 0
 
 def test_get_ilist_type(ilist):
     assert get_ilist_type(ilist) == "and"
