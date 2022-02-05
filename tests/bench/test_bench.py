@@ -31,6 +31,13 @@ def test_add_gate():
     bench.add_gate("output", "and", ["input1", "input2"])
     assert "output = and(input1, input2)" in str(bench)
 
+def test_add_gate_with_constant():
+    bench = Bench("test_file")
+    bench.add_gate("output", "and", ["input1", 0])
+
+    assert "FALSE_CONST = and(TF_CONST, TF_CONST_NOT)" in str(bench)
+    assert "output = and(input1, FALSE_CONST)" in str(bench)
+
 def test_remove_inputs():
     bench = Bench("test_file")
     bench.add_input("input1")

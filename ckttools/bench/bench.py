@@ -20,6 +20,13 @@ class Bench:
         self.outputs.append(o)
 
     def add_gate(self, output, gate_type, inputs):
+        if 0 in inputs:
+            self._add_false_const()
+            inputs = [input_ if input_ != 0 else FALSE_GATE_OUTPUT for input_ in inputs]
+        if 1 in inputs:
+            self._add_true_const()
+            inputs = [input_ if input_ != 1 else TRUE_GATE_OUTPUT for input_ in inputs]
+
         gate = Gate(output, gate_type, inputs)
         self.gates[output] = gate
 
@@ -58,17 +65,30 @@ class Bench:
             del self.gates[net_name]
 
     def apply_input_pattern(self, pattern):
-        self.add_input(TF_INPUT_NAME)
-        self.add_gate(TF_NEG_NAME, "not", [TF_INPUT_NAME])
-
         if "0" in pattern.values():
-            self.add_gate(FALSE_GATE_OUTPUT, "and", [TF_INPUT_NAME, TF_NEG_NAME])
+            self._add_false_const()
         if "1" in pattern.values():
-            self.add_gate(TRUE_GATE_OUTPUT, "nand", [TF_INPUT_NAME, TF_NEG_NAME])
+            self._add_true_const()
 
         for gate_output in self.gates:
             gate = self.gates[gate_output]
             gate.inputs = [self._change_to_constants(i, pattern) for i in gate.inputs]
+
+    def _add_false_const(self):
+        if TF_INPUT_NAME not in self.inputs:
+            self.add_input(TF_INPUT_NAME)
+            self.add_gate(TF_NEG_NAME, "not", [TF_INPUT_NAME])
+
+        if FALSE_GATE_OUTPUT not in self.gates:
+            self.add_gate(FALSE_GATE_OUTPUT, "and", [TF_INPUT_NAME, TF_NEG_NAME])
+
+    def _add_true_const(self):
+        if TF_INPUT_NAME not in self.inputs:
+            self.add_input(TF_INPUT_NAME)
+            self.add_gate(TF_NEG_NAME, "not", [TF_INPUT_NAME])
+
+        if TRUE_GATE_OUTPUT not in self.gates:
+            self.add_gate(TRUE_GATE_OUTPUT, "nand", [TF_INPUT_NAME, TF_NEG_NAME])
 
     def _change_to_constants(self, input_, pattern):
         if input_ not in pattern:
