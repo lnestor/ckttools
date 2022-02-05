@@ -1,6 +1,6 @@
 from ckttools.bench.bench import Bench
 from ckttools.bench.parse import parse_from_verilog
-from ckttools.propagation.measure import create_test_bench_file, get_key_patterns
+from ckttools.propagation.key_patterns import create_test_bench_file, get_key_patterns
 from tests.fixtures.fixtures import get_fixture_path
 import pytest
 

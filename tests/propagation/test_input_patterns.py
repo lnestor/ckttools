@@ -1,9 +1,6 @@
-from ckttools.measure_propagation_probability import get_input_patterns
+from ckttools.propagation.input_patterns import get_input_patterns
 from ckttools.keygates.metadata import parse_metadata
 from tests.fixtures.fixtures import get_fixture_path
-
-# TODO: add public method to get key gate info from a file and then 
-# add key gate info the fixtures
 
 def test_get_input_patterns_simple():
     locked_filename = get_fixture_path("simple_propagation_locked")
