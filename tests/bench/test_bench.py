@@ -67,6 +67,26 @@ def test_remove_gates_recursive_preserving_inputs(complex_bench):
     complex_bench.remove_gates_recursive("w2", preserve_inputs=True)
     assert "INPUT(input1)" in str(complex_bench)
 
+def test_remove_gates_recursive_with_constants(complex_bench):
+    complex_bench.add_output("new_output")
+    complex_bench.add_gate("new_output", "and", ["input1", 1])
+    complex_bench.remove_gates_recursive("new_output")
+
+    assert "INPUT(TF_CONST)" not in str(complex_bench)
+    assert "TRUE_CONST = nand(TF_CONST, TF_CONST_NOT)" not in str(complex_bench)
+    assert "TF_CONST_NOT = not(TF_CONST)" not in str(complex_bench)
+
+def test_remove_gates_recursive_with_constants_used_twice(complex_bench):
+    complex_bench.add_output("new_output1")
+    complex_bench.add_output("new_output2")
+    complex_bench.add_gate("new_output1", "and", ["input1", 1])
+    complex_bench.add_gate("new_output2", "and", ["input2", 1])
+    complex_bench.remove_gates_recursive("new_output1")
+
+    assert "INPUT(TF_CONST)" in str(complex_bench)
+    assert "TRUE_CONST = nand(TF_CONST, TF_CONST_NOT)" in str(complex_bench)
+    assert "TF_CONST_NOT = not(TF_CONST)" in str(complex_bench)
+
 def test_apply_input_pattern(complex_bench):
     complex_bench.apply_input_pattern({"input1": "1", "input2": "0", "input3": "1"})
     assert "w1 = and(TRUE_CONST, FALSE_CONST)" in str(complex_bench)

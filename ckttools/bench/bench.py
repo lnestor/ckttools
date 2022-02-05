@@ -54,15 +54,46 @@ class Bench:
         del self.gates[gate_output]
 
     def remove_gates_recursive(self, gate_output, preserve_inputs=False):
+        self._remove_gates_recursive(gate_output, preserve_inputs)
+        check_for_constants = TF_INPUT_NAME in self.inputs
+
+        if check_for_constants:
+            self._potentially_remove_constants()
+
+    def _remove_gates_recursive(self, gate_output, preserve_inputs):
         net_name = gate_output
 
-        if net_name in self.inputs and not preserve_inputs:
+        if net_name == FALSE_GATE_OUTPUT or net_name == TRUE_GATE_OUTPUT:
+            return
+        elif net_name in self.inputs and not preserve_inputs:
             self.inputs.remove(net_name)
         elif net_name in self.gates:
             for input_ in self.gates[net_name].inputs:
-                self.remove_gates_recursive(input_, preserve_inputs=preserve_inputs)
+                self._remove_gates_recursive(input_, preserve_inputs)
 
             del self.gates[net_name]
+
+    def _potentially_remove_constants(self):
+        has_false_constant = False
+        has_true_constant = False
+
+        for gate_output in self.gates:
+            gate = self.gates[gate_output]
+
+            if FALSE_GATE_OUTPUT in gate.inputs and gate_output != TF_NEG_NAME:
+                has_false_constant = True
+
+            if TRUE_GATE_OUTPUT in gate.inputs and gate_output != TF_NEG_NAME:
+                has_true_constant = True
+
+        if not has_false_constant and FALSE_GATE_OUTPUT in self.gates:
+            self.remove_gate(FALSE_GATE_OUTPUT)
+
+        if not has_true_constant and TRUE_GATE_OUTPUT in self.gates:
+            self.remove_gate(TRUE_GATE_OUTPUT)
+
+        if not has_false_constant and not has_true_constant:
+            self.remove_gates_recursive(TF_NEG_NAME)
 
     def apply_input_pattern(self, pattern):
         if "0" in pattern.values():
