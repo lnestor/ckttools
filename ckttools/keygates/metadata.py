@@ -2,7 +2,9 @@ def parse_metadata(filename):
     with open(filename) as f:
         lines = f.readlines()
 
-    metadata = {}
+    key_gate_metadata = {}
+    non_flip_key_inputs = []
+
     for line in lines:
         if line.startswith("// [KeyGate]:"):
             raw_info = line.split(":")[1].split(",")
@@ -14,6 +16,10 @@ def parse_metadata(filename):
             m["key_input_net"] = raw_info[3].strip()
             m["original_circuit_net"] = raw_info[4].strip()
 
-            metadata[m["key_gate_name"]] = m
+            key_gate_metadata[m["key_gate_name"]] = m
 
-    return metadata
+        if line.startswith("// [NonFlipKeyInput]:"):
+            key = line.split(":")[1].strip()
+            non_flip_key_inputs.append(key)
+
+    return {"key_gates": key_gate_metadata, "non_flip_key_inputs": non_flip_key_inputs}
