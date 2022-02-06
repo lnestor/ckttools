@@ -24,3 +24,14 @@ def test_measure_propagation_events_functional_sarlock_mux1():
     events = measure_propagation_events(moddef, metadata, num_samples)
 
     assert events["FLIP_IT_0"].get_probability() == 0.5
+
+def test_measure_propagation_events_functional_sarlock_mux2():
+    filename = get_benchmark_path("iscas/c1908/sarlock8_mux2")
+
+    moddef = get_moddef_from_verilog(filename)
+    metadata = parse_metadata(filename)
+    num_samples = 10
+
+    events = measure_propagation_events(moddef, metadata, num_samples)
+
+    assert events["FLIP_IT_0"].get_probability() == 0.25

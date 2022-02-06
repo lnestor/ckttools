@@ -1,5 +1,8 @@
 
 
+// [KeyGate]: FLIP_IT_0, signal_from_circuit_0, flipped_signal_1, mask_and_0, N2782
+// [NonFlipKeyInput]: keyIn_1_8
+// [NonFlipKeyInput]: keyIn_1_9
 module c1908
 (
   N1,
