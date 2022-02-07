@@ -32,10 +32,16 @@ def _calculate(ilist_map, net):
 
     if type_ == "and":
         return np.prod(input_probs)
+    elif type_ == "nand":
+        return 1 - np.prod(input_probs)
     elif type_ == "or":
         return _calculate_or_probability(input_probs)
+    elif type_ == "nor":
+        return 1 - _calculate_or_probability(input_probs)
     elif type_ == "xor":
         return _calculate_xor_probability(input_probs)
+    elif type_ == "xnor":
+        return 1 - _calculate_xor_probability(input_probs)
     elif type_ == "not":
         return 1 - input_probs[0]
     else:

@@ -4,6 +4,7 @@ def parse_metadata(filename):
 
     key_gate_metadata = {}
     non_flip_key_inputs = []
+    number_incorrect_keys = None
 
     for line in lines:
         if line.startswith("// [KeyGate]:"):
@@ -22,4 +23,7 @@ def parse_metadata(filename):
             key = line.split(":")[1].strip()
             non_flip_key_inputs.append(key)
 
-    return {"key_gates": key_gate_metadata, "non_flip_key_inputs": non_flip_key_inputs}
+        if line.startswith("// [IncorrectKeys]:"):
+            number_incorrect_keys = int(line.split(":")[1])
+
+    return {"key_gates": key_gate_metadata, "non_flip_key_inputs": non_flip_key_inputs, "number_incorrect_keys": number_incorrect_keys}

@@ -1,6 +1,7 @@
 import argparse
 from flip.calculator import calculate_flip_probability
 from keygates.metadata import parse_metadata
+from propagation.measure import measure_propagation_events
 from vast.graph_search import get_key_inputs_from_subcircuit
 from vast.search import get_moddef_from_verilog, get_ilists
 
@@ -15,22 +16,27 @@ def find_total_keys(moddef, net):
     key_inputs = get_key_inputs_from_subcircuit(moddef, net)
     return 2**len(key_inputs)
 
-def main():
-    args = get_args()
-    key_metadata = parse_metadata(args.locked)
-    moddef = get_moddef_from_verilog(args.locked)
-
-    for gate_name in key_metadata:
-        m = key_metadata[gate_name]
+def measure_lambda(moddef, metadata, num_samples):
+    for gate_name in metadata["key_gates"]:
+        m = metadata["key_gates"][gate_name]
 
         total_keys = find_total_keys(moddef, m["key_input_net"])
         pflip = calculate_flip_probability(get_ilists(moddef), m["key_input_net"])
+        events = measure_propagation_events(moddef, metadata, num_samples)
+        pprop = events[m["key_gate_name"]].get_probability()
+        pincorrect = metadata["number_incorrect_keys"] / total_keys
 
-        # Calculate # incorrect keys
-        # Calculate p(prop)
-        # lambda >= p(incorrect) / (p(prop) * p(flip))
+        lambda_min = pincorrect / (pflip * pprop)
+        return lambda_min
 
-        import pdb; pdb.set_trace()
+def main():
+    args = get_args()
+    metadata = parse_metadata(args.locked)
+    moddef = get_moddef_from_verilog(args.locked)
+
+    lambda_ = measure_lambda(moddef, metadata, args.num_samples)
+
+    import pdb; pdb.set_trace()
 
 if __name__ == "__main__":
     main()
