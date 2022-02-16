@@ -100,7 +100,7 @@ module c1908
   wire const_comp_xor_0_5;
   wire const_comp_xor_0_6;
   wire const_comp_xor_0_7;
-  wire const_comp_and_0;
+  wire const_comp_nand_0;
   wire mask_and_0;
   wire signal_from_circuit_0;
 
@@ -7921,10 +7921,10 @@ module c1908
   );
 
 
-  and
-  CONST_COMP_AND_0
+  nand
+  CONST_COMP_NAND_0
   (
-    const_comp_and_0,
+    const_comp_nand_0,
     const_comp_xor_0_0,
     const_comp_xor_0_1,
     const_comp_xor_0_2,
@@ -7941,7 +7941,7 @@ module c1908
   (
     mask_and_0,
     sig_comp_and_0,
-    const_comp_and_0
+    const_comp_nand_0
   );
 
 

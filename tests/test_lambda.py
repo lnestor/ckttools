@@ -15,3 +15,25 @@ def test_calculate_lambda_functional_sarlock():
     expected = lambda_.measure_lambda(moddef, metadata, num_samples)
 
     assert expected == 255
+
+def test_calculate_lambda_functional_antisat():
+    filename = get_benchmark_path("iscas/c1355/antisat8")
+
+    moddef = get_moddef_from_verilog(filename)
+    metadata = parse_metadata(filename)
+    num_samples = 10
+
+    expected = lambda_.measure_lambda(moddef, metadata, num_samples)
+
+    assert expected == 16
+
+def test_calculate_lambda_functional_antisat_mux():
+    filename = get_benchmark_path("iscas/c1355/antisat4_mux1")
+
+    moddef = get_moddef_from_verilog(filename)
+    metadata = parse_metadata(filename)
+    num_samples = 10
+
+    expected = lambda_.measure_lambda(moddef, metadata, num_samples)
+
+    assert expected == 8
