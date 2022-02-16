@@ -3,9 +3,14 @@ from ckttools.atalanta.results import parse_test_file
 FILE_CONTENTS = """* Name of circuit:  tmp/test.bench
 * Primary inputs :
   in2 in3 in4 
+  in5 in6
+  in7
+  in8
+  in9
 
 * Primary outputs:
   out2
+  out3
 
 * Test patterns and fault free responses:
 
@@ -29,4 +34,3 @@ def test_parse_test_file(tmp_path):
 
     assert test_patterns["b1"] == ["101", "001"]
     assert test_patterns["in4->out2"] == ["x11", "101", "x10", "100"]
-
