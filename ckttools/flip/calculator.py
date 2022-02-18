@@ -1,26 +1,6 @@
-from functools import reduce
-from itertools import combinations
 import numpy as np
+import probability as prob
 from vast.search import get_ilist_output, get_ilist_type, get_ilist_inputs
-
-def _calculate_or_probability(input_probs):
-    parity = 1
-    prob = 0
-
-    for i in range(len(input_probs)):
-        combos = list(combinations(input_probs, i + 1))
-        inter_prob = [np.prod(combo) for combo in combos]
-        prob += parity * sum(inter_prob)
-        parity *= -1
-
-    return prob
-
-def _calculate_xor_probability(input_probs):
-    if len(input_probs) == 1:
-        return input_probs[0]
-    else:
-        rest = _calculate_xor_probability(input_probs[1:])
-        return _calculate_or_probability([input_probs[0], rest]) - input_probs[0] * rest
 
 def _calculate(ilist_map, net):
     if net not in ilist_map:
@@ -35,13 +15,13 @@ def _calculate(ilist_map, net):
     elif type_ == "nand":
         return 1 - np.prod(input_probs)
     elif type_ == "or":
-        return _calculate_or_probability(input_probs)
+        return prob.or_(input_probs)
     elif type_ == "nor":
-        return 1 - _calculate_or_probability(input_probs)
+        return 1 - prob.or_(input_probs)
     elif type_ == "xor":
-        return _calculate_xor_probability(input_probs)
+        return prob.xor(input_probs)
     elif type_ == "xnor":
-        return 1 - _calculate_xor_probability(input_probs)
+        return 1 - prob.xor(input_probs)
     elif type_ == "not":
         return 1 - input_probs[0]
     else:
