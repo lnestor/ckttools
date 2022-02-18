@@ -1,6 +1,8 @@
 import argparse
 from flip.calculator import calculate_flip_probability
 from keygates.metadata import parse_metadata
+import numpy as np
+import probability as prob
 from propagation.measure import measure_propagation_events
 from vast.graph_search import get_key_inputs_from_subcircuit
 from vast.search import get_moddef_from_verilog, get_ilists
@@ -16,18 +18,24 @@ def find_total_keys(moddef, net):
     key_inputs = get_key_inputs_from_subcircuit(moddef, net)
     return 2**len(key_inputs)
 
+def calculate_probabilities(moddef, m, prop_events, num_samples):
+    total_keys = find_total_keys(moddef, m["key_input_net"])
+    pflip = calculate_flip_probability(get_ilists(moddef), m["key_input_net"])
+
+    pprop = prop_events[m["key_gate_name"]].get_probability()
+    pincorrect = m["number_incorrect_keys"] / total_keys
+
+    return {"pflip": pflip, "pprop": pprop, "pincorrect": pincorrect}
+
 def measure_lambda(moddef, metadata, num_samples):
-    for gate_name in metadata["key_gates"]:
-        m = metadata["key_gates"][gate_name]
+    prop_events = measure_propagation_events(moddef, metadata, num_samples)
+    gate_probs = [calculate_probabilities(moddef, m, prop_events, num_samples) for _, m in metadata["key_gates"].items()]
 
-        total_keys = find_total_keys(moddef, m["key_input_net"])
-        pflip = calculate_flip_probability(get_ilists(moddef), m["key_input_net"])
-        events = measure_propagation_events(moddef, metadata, num_samples)
-        pprop = events[m["key_gate_name"]].get_probability()
-        pincorrect = metadata["number_incorrect_keys"] / total_keys
+    # Lambda = 1 - prod(correct) / or(flips)
+    num = 1 - np.prod([1 - prob["pincorrect"] for prob in gate_probs])
+    den = prob.or_([prob["pflip"] * prob["pprop"] for prob in gate_probs])
 
-        lambda_min = pincorrect / (pflip * pprop)
-        return lambda_min
+    return num / den
 
 def main():
     args = get_args()

@@ -4,7 +4,7 @@ VERILOG_WITH_METADATA = """
 // Key Gate Metadata:
 // [KeyGate]: KeyGate1, circuit_input, output, key_input, original_net
 // [NonFlipKeyInput]: non_flip
-// [IncorrectKeys]: 12
+// [IncorrectKeys]: KeyGate1, 12
 module someverilog();
 endmodule
 """
@@ -20,6 +20,7 @@ def test_parse_metadata(tmp_path):
     assert key_gate_metadata["KeyGate1"]["output_net"] == "output"
     assert key_gate_metadata["KeyGate1"]["key_input_net"] == "key_input"
     assert key_gate_metadata["KeyGate1"]["original_circuit_net"] == "original_net"
+    assert key_gate_metadata["KeyGate1"]["number_incorrect_keys"] == 12
 
 def test_parse_metadata_non_flipping_key_inputs(tmp_path):
     f = tmp_path / "example.v"
@@ -29,13 +30,3 @@ def test_parse_metadata_non_flipping_key_inputs(tmp_path):
     keys = metadata["non_flip_key_inputs"]
 
     assert "non_flip" in keys
-
-def test_parse_metadata_number_incorrect_keys(tmp_path):
-    f = tmp_path / "example.v"
-    f.write_text(VERILOG_WITH_METADATA)
-
-    metadata = parse_metadata(f)
-    number_incorrect_keys = metadata["number_incorrect_keys"]
-
-    assert number_incorrect_keys == 12
-

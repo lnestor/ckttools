@@ -1,7 +1,7 @@
 
 
 // [KeyGate]: flip_it, AntiSAT_key_wire, AntiSAT_key_wire_modified, AntiSAT_output, G1325
-// [IncorrectKeys]: 12
+// [IncorrectKeys]: flip_it, 12
 // [NonFlipKeyInput]: keyIn_mux_0_0
 module c1355
 (

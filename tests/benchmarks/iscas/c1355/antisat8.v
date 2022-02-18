@@ -1,7 +1,7 @@
 
 
 // [KeyGate]: flip_it, AntiSAT_key_wire, G1325, AntiSAT_output, G1325
-// [IncorrectKeys]: 240
+// [IncorrectKeys]: flip_it, 240
 module c1355
 (
   G1,

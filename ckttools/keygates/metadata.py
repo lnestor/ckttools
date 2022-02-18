@@ -24,6 +24,10 @@ def parse_metadata(filename):
             non_flip_key_inputs.append(key)
 
         if line.startswith("// [IncorrectKeys]:"):
-            number_incorrect_keys = int(line.split(":")[1])
+            raw_info = line.split(":")[1].split(",")
+            key_gate_name = raw_info[0].strip()
+            number_incorrect_keys = int(raw_info[1])
+            # Doesn't work if this isn't already present in the dictionary
+            key_gate_metadata[key_gate_name]["number_incorrect_keys"] = number_incorrect_keys
 
-    return {"key_gates": key_gate_metadata, "non_flip_key_inputs": non_flip_key_inputs, "number_incorrect_keys": number_incorrect_keys}
+    return {"key_gates": key_gate_metadata, "non_flip_key_inputs": non_flip_key_inputs}
