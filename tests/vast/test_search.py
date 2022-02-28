@@ -51,6 +51,9 @@ def test_get_key_input_names(moddef):
 def test_get_input_names(moddef):
     assert get_input_names(moddef) == ["in1", "in2", "in3", "in4", "keyIn0_0"]
 
+def test_get_input_nodes(moddef):
+    assert get_input_nodes(moddef)[0].name == "in1"
+
 def test_get_output_names(moddef):
     assert get_output_names(moddef) == ["out1", "out2"]
 
@@ -85,6 +88,9 @@ def test_get_ilist_output(ilist):
 
 def test_get_ilist_inputs(ilist):
     assert get_ilist_inputs(ilist) == ["input0", "input1"]
+
+def test_get_ilist_input_nodes(ilist):
+    assert get_ilist_input_nodes(ilist)[0].name == "input0"
 
 def test_get_ilist_inputs_with_const(ilist_with_const):
     assert get_ilist_inputs(ilist_with_const) == [0]

@@ -17,6 +17,9 @@ def get_input_names(moddef):
     input_nodes = _get_decl_nodes(moddef, vast.Input)
     return [n.name for n in input_nodes]
 
+def get_input_nodes(moddef):
+    return _get_decl_nodes(moddef, vast.Input)
+
 def get_output_names(moddef):
     output_nodes = _get_decl_nodes(moddef, vast.Output)
     return [n.name for n in output_nodes]
@@ -70,6 +73,9 @@ def get_ilist_output(ilist):
 def get_ilist_inputs(ilist):
     num_inputs = len(ilist.children()[0].children()[1:])
     return [get_ilist_input(ilist, i) for i in range(num_inputs)]
+
+def get_ilist_input_nodes(ilist):
+    return [portarg.children()[0] for portarg in ilist.children()[0].children()[1:]]
 
 def get_ilist_input(ilist, index):
     input_obj = ilist.children()[0].children()[index + 1].children()[0]
