@@ -89,6 +89,10 @@ def get_ilist_input(ilist, index):
 def get_ilist_type(ilist):
     return ilist.module
 
+def get_ast(verilog):
+    ast, _ = parse([verilog], debug=False)
+    return ast
+
 def get_moddef(ast):
     return ast.children()[0].children()[0]
 
