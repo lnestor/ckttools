@@ -24,6 +24,9 @@ def get_output_names(moddef):
     output_nodes = _get_decl_nodes(moddef, vast.Output)
     return [n.name for n in output_nodes]
 
+def get_net_names(moddef):
+    return [*get_input_names(moddef), *get_output_names(moddef), *get_wire_names(moddef)]
+
 def _get_decl_nodes(moddef, cls):
     decls = [n for n in moddef.children() if len(n.children()) > 0 and isinstance(n.children()[0], cls)]
     nodes = [child for node in decls for child in node.children()]

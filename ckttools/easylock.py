@@ -1,5 +1,6 @@
 import argparse
 from locking.args import default_pass_args
+import locking.globals as GLOBALS
 from locking.definition import Definition
 from pyverilog.ast_code_generator.codegen import ASTCodeGenerator
 from vast.search import get_moddef, get_ast
@@ -47,6 +48,8 @@ def run_pass(moddef, pass_config, defs, prev_pass_data):
     if locking_type not in defs:
         print("ERROR: locking type %s not recognized" % locking_type)
         exit(-1)
+
+    GLOBALS.pass_index += 1
 
     args = default_pass_args(moddef, pass_config, prev_pass_data)
     defs[locking_type].get_args(pass_config, args)

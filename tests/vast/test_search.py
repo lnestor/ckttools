@@ -57,6 +57,9 @@ def test_get_input_nodes(moddef):
 def test_get_output_names(moddef):
     assert get_output_names(moddef) == ["out1", "out2"]
 
+def test_get_net_names(moddef):
+    assert get_net_names(moddef) == ["in1", "in2", "in3", "in4", "keyIn0_0", "out1", "out2", "w1", "w2", "w3"]
+
 def test_find_last_input(moddef):
     # Index 0: paramlist, index 1: port list, index 2: first inputs
     assert find_last_input(moddef) == 3
