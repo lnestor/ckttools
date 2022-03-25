@@ -1,3 +1,4 @@
+from .adjacent import find_adjacent
 from vast.search import get_output_names
 from vast import interference
 
@@ -36,6 +37,8 @@ def net_type_filter(net_type, index):
         return lambda moddef, nets, prev_pass_data: filt(nets, get_output_names(moddef))
     elif net_type == "previous":
         return lambda moddef, nets, prev_pass_data: filt(nets, prev_pass_data[index - 1]["insertion_net"])
+    elif net_type == "output-adjacent-non-unary":
+        return lambda moddef, nets, prev_pass_data: filt(nets, find_adjacent(moddef, allow_unary=False))
     else:
         print("ERROR: unknown net type %s in insertion filter" % net_type)
         exit(-1)

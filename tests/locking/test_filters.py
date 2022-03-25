@@ -52,6 +52,12 @@ def test_net_type_filter_output(moddef):
 
     assert filter_.filter(moddef, nets, {}) == ["out1", "out2"]
 
+def test_net_type_filter_last_two_input_gate_non_output(moddef):
+    filter_ = get_filter("net-type", "output-adjacent-non-unary", 0)
+    nets = get_net_names(moddef)
+
+    assert filter_.filter(moddef, nets, {}) == ["w1"]
+
 def test_net_type_filter_previous(moddef):
     filter_ = get_filter("net-type", "previous", 1)
     nets = get_net_names(moddef)
