@@ -16,3 +16,6 @@ def add_suffix_to_keys(moddef, suffix):
 
         for ilist in ilists:
             change_ilist_input_name(ilist, key, key + suffix)
+
+def rename_ilist_output(ilist, name):
+    ilist.children()[0].children()[0].children()[0].name = name

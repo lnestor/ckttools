@@ -1,0 +1,18 @@
+---
+locking-types:
+  # - name: Sarlock
+  #   key: sarlock
+  #   module: sarlock.external
+  # - name: Multiplexer
+  #   key: multiplexer
+  #   module: multiplexer.external
+  # - name: Single RLL Key Gate
+  #   key: single-key-gate
+  #   module: singlekey.external
+  - name: Anti-SAT
+    key: antisat
+    module: antisat.external
+  # - name: Camouflage Replacement
+  #   key: camouflage-replace
+  #   module: camouflage.external
+

@@ -1,14 +1,15 @@
 import numpy as np
 import probability as prob
-from vast.search import get_ilist_output, get_ilist_type, get_ilist_inputs
+from vast.search import get_ilist_output, get_ilist_type, get_ilist_inputs, try_get_ilist_from_output
 
-def _calculate(ilist_map, net):
-    if net not in ilist_map:
+def _calculate(moddef, net):
+    ilist = try_get_ilist_from_output(moddef, net)
+
+    if ilist is None:
         return 0.5
 
-    ilist = ilist_map[net]
     type_ = get_ilist_type(ilist)
-    input_probs = [_calculate(ilist_map, input_) for input_ in get_ilist_inputs(ilist)]
+    input_probs = [_calculate(moddef, input_) for input_ in get_ilist_inputs(ilist)]
 
     if type_ == "and":
         return np.prod(input_probs)
@@ -27,6 +28,5 @@ def _calculate(ilist_map, net):
     else:
         raise RuntimeError("p(flip) calculation: unknown gate type " + type_)
 
-def calculate_flip_probability(ilists, net):
-    ilist_map = {get_ilist_output(ilist): ilist for ilist in ilists}
-    return _calculate(ilist_map, net)
+def calculate_flip_probability(moddef, net):
+    return _calculate(moddef, net)

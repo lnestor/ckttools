@@ -20,7 +20,7 @@ def find_total_keys(moddef, net):
 
 def calculate_probabilities(moddef, m, prop_events, num_samples):
     total_keys = find_total_keys(moddef, m["key_input_net"])
-    pflip = calculate_flip_probability(get_ilists(moddef), m["key_input_net"])
+    pflip = calculate_flip_probability(moddef, m["key_input_net"])
 
     pprop = prop_events[m["key_gate_name"]].get_probability()
     pincorrect = m["number_incorrect_keys"] / total_keys

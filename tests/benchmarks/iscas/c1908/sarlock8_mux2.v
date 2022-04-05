@@ -3,9 +3,6 @@
 // [KeyGate]: FLIP_IT_0, signal_from_circuit_0, flipped_signal_1, mask_and_0, N2782
 // [NonFlipKeyInput]: keyIn_1_8
 // [NonFlipKeyInput]: keyIn_1_9
-There is an issue in these SARLock circuits where a comparator and should be
-a nand. I'm putting this here to fail when parsing the circuit to get this
-message.
 module c1908
 (
   N1,
@@ -7850,7 +7847,7 @@ module c1908
   );
 
 
-  and
+  nand
   SIG_COMP_AND_0
   (
     sig_comp_and_0,
@@ -7937,7 +7934,7 @@ module c1908
   );
 
 
-  and
+  nand
   CONST_COMP_AND_0
   (
     const_comp_and_0,
