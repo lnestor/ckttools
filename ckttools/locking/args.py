@@ -7,7 +7,7 @@ def get_insertion_net(moddef, pass_config, prev_pass_data):
         print("ERROR: pass %i does not have insertion data" % pass_config["index"])
         exit(-1)
 
-    filters = [get_filter(name, value, pass_config) for name, value in pass_config["insertion"].items()]
+    filters = [get_filter(name, value, pass_config["index"]) for name, value in pass_config["insertion"].items()]
     nets = get_net_names(moddef)
 
     for filter_ in filters:

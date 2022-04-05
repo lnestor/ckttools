@@ -36,9 +36,11 @@ def net_type_filter(net_type, index):
     if net_type == "output":
         return lambda moddef, nets, prev_pass_data: filt(nets, get_output_names(moddef))
     elif net_type == "previous":
-        return lambda moddef, nets, prev_pass_data: filt(nets, prev_pass_data[index - 1]["insertion_net"])
+        return lambda moddef, nets, prev_pass_data: filt(nets, [prev_pass_data[index - 1]["insertion_net"]])
     elif net_type == "output-adjacent-non-unary":
         return lambda moddef, nets, prev_pass_data: filt(nets, find_adjacent(moddef, allow_unary=False))
+    elif net_type == "output-adjacent-non-unary-input":
+        return lambda moddef, nets, prev_pass_data: filt(nets, find_adjacent(moddef, allow_unary=False, inputs=True))
     else:
         print("ERROR: unknown net type %s in insertion filter" % net_type)
         exit(-1)
@@ -48,7 +50,7 @@ def net_name_filter(net_name):
 
 def find_interfering_nets(moddef, args, prev_pass_data):
     nets = [prev_pass_data[idx]["insertion_net"] for idx in args["passes"]]
-    return interference.find_interfering_nets(moddef, args["type"], nets, args["hops"] if "hops" in args else -1)
+    return interference.find_interfering_nets(moddef, args["type"], nets, args["distance"] if "distance" in args else -1)
 
 def interference_filter(args):
     return lambda moddef, nets, prev_pass_data: filt(nets, find_interfering_nets(moddef, args, prev_pass_data))

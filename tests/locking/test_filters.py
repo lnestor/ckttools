@@ -52,11 +52,17 @@ def test_net_type_filter_output(moddef):
 
     assert filter_.filter(moddef, nets, {}) == ["out1", "out2"]
 
-def test_net_type_filter_last_two_input_gate_non_output(moddef):
+def test_net_type_filter_output_adjacent_non_unary(moddef):
     filter_ = get_filter("net-type", "output-adjacent-non-unary", 0)
     nets = get_net_names(moddef)
 
     assert filter_.filter(moddef, nets, {}) == ["w1"]
+
+def test_net_type_filter_output_adjacent_non_unary_input(moddef):
+    filter_ = get_filter("net-type", "output-adjacent-non-unary-input", 0)
+    nets = get_net_names(moddef)
+
+    assert filter_.filter(moddef, nets, {}) == ["in3", "w3"]
 
 def test_net_type_filter_previous(moddef):
     filter_ = get_filter("net-type", "previous", 1)
@@ -101,8 +107,8 @@ def test_interference_filter_type_indirect(moddef):
 
     assert filter_.filter(moddef, nets, prev_pass_data) == ["in3", "in4"]
 
-def test_interference_filter_type_indirect_with_hops(moddef):
-    filter_ = get_filter("interference", {"type": "indirect", "passes": [0], "hops": 1}, 1)
+def test_interference_filter_type_indirect_with_distance(moddef):
+    filter_ = get_filter("interference", {"type": "indirect", "passes": [0], "distance": 1}, 1)
     nets = get_net_names(moddef)
     prev_pass_data = [{"insertion_net": "w3"}]
 
