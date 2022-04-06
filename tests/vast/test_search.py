@@ -106,3 +106,6 @@ def test_get_ilist_input_with_const(ilist_with_const):
 
 def test_get_ilist_type(ilist):
     assert get_ilist_type(ilist) == "and"
+
+def test_get_ilist_name(ilist):
+    assert get_ilist_name(ilist) == "TEST_AND"

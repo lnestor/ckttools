@@ -1,5 +1,5 @@
 import pyverilog.vparser.ast as vast
-from vast.search import find_last_input, find_last_wire
+from vast.search import find_last_input, find_last_wire, find_last_output
 
 def create_ilist(moddef, gate_type, gate_name, output, inputs, add_output_wire=True):
     out_port = vast.PortArg(None, vast.Identifier(output))
@@ -20,6 +20,16 @@ def create_ilist(moddef, gate_type, gate_name, output, inputs, add_output_wire=T
     return output
 
 def create_input(moddef, name):
+    last_input_index = find_last_input(moddef)
+    # moddef.items != moddef.children(), all indices are 2 off
+    return _create_input(moddef, name, last_input_index - 1)
+
+def create_inputs(moddef, names):
+    last_input_index = find_last_input(moddef)
+    # moddef.items != moddef.children(), all indices are 2 off
+    return [_create_input(moddef, n, last_input_index - 1 + i) for i, n in enumerate(names)]
+
+def _create_input(moddef, name, index):
     portlist = moddef.children()[1]
     ports = list(portlist.ports)
     items = list(moddef.items)
@@ -27,24 +37,56 @@ def create_input(moddef, name):
     port = vast.Port(name, None, None, None)
     ports.append(port)
 
-    last_input_index = find_last_input(moddef)
     decl = vast.Decl([vast.Input(name)])
-    # moddef.items != moddef.children(), all indices are 2 off
-    items.insert(last_input_index - 1, decl)
+    items.insert(index, decl)
 
     portlist.ports = tuple(ports)
     moddef.items = tuple(items)
-
     return decl
 
 def create_wire(moddef, name):
+    last_wire_index = find_last_wire(moddef)
+    # moddef.items != moddef.children(), all indices are 2 off
+    return _create_wire(moddef, name, last_wire_index - 1)
+
+def create_wires(moddef, names):
+    last_wire_index = find_last_wire(moddef)
+    # moddef.items != moddef.children(), all indices are 2 off
+    return [_create_wire(moddef, n, last_wire_index - 1 + i) for i, n in enumerate(names)]
+
+def _create_wire(moddef, name, index):
     items = list(moddef.items)
 
-    last_wire_index = find_last_wire(moddef)
     decl = vast.Decl([vast.Wire(name)])
-    # moddef.items != moddef.children(), all indices are 2 off
-    items.insert(last_wire_index - 1, decl)
+    items.insert(index, decl)
 
     moddef.items = tuple(items)
     return decl
 
+def create_output(moddef, name):
+    last_output_index = find_last_output(moddef)
+    # moddef.items != moddef.children(), all indices are 2 off
+    return _create_output(moddef, name, last_output_index - 1)
+
+def create_outputs(moddef, names):
+    last_output_index = find_last_output(moddef)
+    # moddef.items != moddef.children(), all indices are 2 off
+    return [_create_output(moddef, n, last_output_index - 1 + i) for i, n in enumerate(names)]
+
+def _create_output(moddef, name, index):
+    portlist = moddef.children()[1]
+    ports = list(portlist.ports)
+    items = list(moddef.items)
+
+    port = vast.Port(name, None, None, None)
+    ports.append(port)
+
+    decl = vast.Decl([vast.Output(name)])
+    items.insert(index, decl)
+
+    portlist.ports = tuple(ports)
+    moddef.items = tuple(items)
+    return decl
+
+def create_moddef(name):
+    return vast.ModuleDef(name, vast.Paramlist([]), vast.Portlist([]), [])

@@ -38,6 +38,9 @@ def find_last_input(moddef):
 def find_last_wire(moddef):
     return _find_last_decl(moddef, vast.Wire)
 
+def find_last_output(moddef):
+    return _find_last_decl(moddef, vast.Output)
+
 def _find_last_decl(moddef, cls):
     index = 0
     for idx in range(len(moddef.children())):
@@ -91,6 +94,9 @@ def get_ilist_input(ilist, index):
 
 def get_ilist_type(ilist):
     return ilist.module
+
+def get_ilist_name(ilist):
+    return ilist.children()[0].name
 
 def get_ast(verilog):
     ast, _ = parse([verilog], debug=False)
