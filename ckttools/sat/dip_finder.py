@@ -1,7 +1,7 @@
 from .copy import copy_moddef
 from .miter import build_miter
 from .model import extract
-from vast.search import get_moddef_from_verilog, get_primary_input_names
+from vast.search import get_moddef_from_verilog, get_primary_input_names, get_key_input_names
 import z3
 from .z3_builder import vast2z3
 
@@ -9,6 +9,7 @@ class DipFinder:
     def __init__(self, locked):
         self.moddef = get_moddef_from_verilog(locked)
         self.primary_inputs = get_primary_input_names(self.moddef)
+        self.key_inputs = get_key_input_names(self.moddef)
         self.solver = z3.Solver()
         self.iterations = 0
 
@@ -20,11 +21,23 @@ class DipFinder:
         self.solver.add(z3.Bool("diff") == True)
 
     def can_find_dip(self):
+        self.model = None
         return self.solver.check() == z3.sat
 
     def get_dip(self):
-        model = self.solver.model()
-        return extract(model, self.primary_inputs, completion=True)
+        if self.model is None:
+            self.model = self.solver.model()
+
+        return extract(self.model, self.primary_inputs, completion=True)
+
+    def get_keys(self):
+        if self.model is None:
+            self.model = self.solver.model()
+
+        key1 = extract(self.model, ["%s__half0" % k for k in self.key_inputs], completion=True)
+        key2 = extract(self.model, ["%s__half1" % k for k in self.key_inputs], completion=True)
+
+        return key1, key2
 
     def add_constraint(self, inputs, oracle_output):
         moddef_half0 = copy_moddef(self.moddef, input_values=inputs, key_suffix="__half0", main_suffix="__half0__iteration%i" % self.iterations)
