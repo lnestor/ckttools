@@ -1,5 +1,7 @@
 import argparse
 from sat.dip_finder import DipFinder
+from sat.key_finder import KeyFinder
+from logic.circuit_solver import CircuitSolver
 
 def get_args():
     parser = argparse.ArgumentParser(description="Run a SAT attack")
@@ -10,19 +12,23 @@ def get_args():
 def run(locked, oracle):
     iterations = 0
     key_constraints = []
+
+    oracle_runner = CircuitSolver(oracle)
     dip_finder = DipFinder(locked)
+    key_finder = KeyFinder(locked)
 
     while dip_finder.can_find_dip():
         dip = dip_finder.get_dip()
-        oracle_output = run_circuit(oracle, dip)
-        dip_finder.add_constraint(dip, oracle_output)
+        oracle_output = oracle_runner.solve(dip)
 
-        key_constraints.append((dip, oracle_output))
+        dip_finder.add_constraint(dip, oracle_output)
+        key_finder.add_constraint(dip, oracle_output)
 
         iterations += 1
 
-    key = find_key(key_constraints)
     print(iterations)
+    key = key_finder.get_key()
+    import pdb; pdb.set_trace()
 
 def main():
     args = get_args()

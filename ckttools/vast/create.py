@@ -3,6 +3,7 @@ from vast.search import find_last_input, find_last_wire, find_last_output
 
 def create_ilist(moddef, gate_type, gate_name, output, inputs, add_output_wire=True):
     out_port = vast.PortArg(None, vast.Identifier(output))
+    # TODO: These should be int constants instead of identifiers sometimes
     in_ports = [vast.PortArg(None, vast.Identifier(name)) for name in inputs]
 
     portlist = (out_port, *in_ports)
