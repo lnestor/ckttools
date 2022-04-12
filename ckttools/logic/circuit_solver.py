@@ -1,13 +1,12 @@
 import copy
-from vast.search import get_moddef_from_verilog, get_ilists, get_output_names
+from vast.search import get_ilists, get_output_names
 import z3
 from sat.z3_builder import vast2z3
 
 class CircuitSolver:
-    def __init__(self, verilog):
-        moddef = get_moddef_from_verilog(verilog)
+    def __init__(self, moddef):
         z3_repr = vast2z3(moddef)
-        self.output_names = get_output_names(moddef)
+        self.output_names = moddef.outputs
 
         self.solver = z3.Solver()
         for repr_ in z3_repr:

@@ -1,19 +1,18 @@
 from .copy import copy_moddef
 from .model import extract
-from vast.search import get_moddef_from_verilog, get_key_input_names
 import z3
 from .z3_builder import vast2z3
 
 class KeyFinder:
-    def __init__(self, locked):
-        self.moddef = get_moddef_from_verilog(locked)
+    def __init__(self, moddef):
+        self.moddef = moddef
         self.solver = z3.Solver()
         self.iterations = 0
 
     def get_key(self):
         self.solver.check()
         model = self.solver.model()
-        return extract(model, get_key_input_names(self.moddef), completion=True)
+        return extract(model, self.moddef.key_inputs, completion=True)
 
     def add_constraint(self, inputs, oracle_output):
         moddef_copy = copy_moddef(self.moddef, input_values=inputs, main_suffix="__iteration%i" % self.iterations)

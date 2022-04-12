@@ -1,15 +1,15 @@
 from .copy import copy_moddef
 from .miter import build_miter
 from .model import extract
-from vast.search import get_moddef_from_verilog, get_primary_input_names, get_key_input_names
+from vast.search import get_primary_input_names, get_key_input_names
 import z3
 from .z3_builder import vast2z3
 
 class DipFinder:
-    def __init__(self, locked):
-        self.moddef = get_moddef_from_verilog(locked)
-        self.primary_inputs = get_primary_input_names(self.moddef)
-        self.key_inputs = get_key_input_names(self.moddef)
+    def __init__(self, moddef):
+        self.moddef = moddef
+        self.primary_inputs = moddef.primary_inputs
+        self.key_inputs = moddef.key_inputs
         self.solver = z3.Solver()
         self.iterations = 0
 

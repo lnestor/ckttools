@@ -1,9 +1,12 @@
 import argparse
 from logic.circuit_solver import CircuitSolver
 from sat.dip_finder import DipFinder
+from sat.legacy_dip_finder import LegacyDipFinder
 from sat.iteration_data import IterationData
 from sat.key_finder import KeyFinder
+from sat.legacy_key_finder import LegacyKeyFinder
 from sat.pretty_print import pp
+from vast.moddef import get_moddef_from_verilog
 
 # TODO: make this faster by potentially not rebuilding the moddef every time
 
@@ -16,13 +19,12 @@ def get_args():
 def run(locked, oracle):
     iterations = 0
     # TODO: how to make this based on the circuit?
-    iteration_data = IterationData([2, 12])
+    iteration_data = IterationData([4, 4])
     # iteration_data = IterationData([4])
 
     oracle_runner = CircuitSolver(oracle)
-    # TODO: legacy DIP finder
-    dip_finder = DipFinder(locked)
-    key_finder = KeyFinder(locked)
+    dip_finder = LegacyDipFinder(locked)
+    key_finder = LegacyKeyFinder(locked)
 
     print("\nStarting SAT Attack\n")
     while dip_finder.can_find_dip():
@@ -45,7 +47,10 @@ def run(locked, oracle):
 
 def main():
     args = get_args()
-    run(args.locked, args.oracle)
+    locked = get_moddef_from_verilog(args.locked)
+    oracle = get_moddef_from_verilog(args.oracle)
+
+    run(locked, oracle)
 
 if __name__ == "__main__":
     main()
