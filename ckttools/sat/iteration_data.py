@@ -38,7 +38,7 @@ class IterationData:
     def _key_row(self, keygate_idx, iteration_idx, bits):
         data = self.data[iteration_idx]
 
-        input_start_idx = int(sum([k / 2 for k in self.keybits[0:keygate_idx]]))
+        input_start_idx = int(sum([k for k in self.keybits[0:keygate_idx]]))
         input_end_idx = input_start_idx + int(bits / 2)
 
         key_start_idx = sum(self.keybits[0:keygate_idx])
