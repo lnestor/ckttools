@@ -3,7 +3,7 @@ from locking.args import default_pass_args
 import locking.globals as GLOBALS
 from locking.definition import Definition
 from pyverilog.ast_code_generator.codegen import ASTCodeGenerator
-from vast.search import get_moddef, get_ast
+from vast.moddef import get_moddef, get_ast
 import yaml
 
 DEFINITIONS_FILENAME = "ckttools/locking/definitions.yaml"

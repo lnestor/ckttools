@@ -34,7 +34,7 @@ def null_filter():
 
 def net_type_filter(net_type, index):
     if net_type == "output":
-        return lambda moddef, nets, prev_pass_data: filt(nets, get_output_names(moddef))
+        return lambda moddef, nets, prev_pass_data: filt(nets, moddef.outputs)
     elif net_type == "previous":
         return lambda moddef, nets, prev_pass_data: filt(nets, [prev_pass_data[index - 1]["insertion_net"]])
     elif net_type == "output-adjacent-non-unary":

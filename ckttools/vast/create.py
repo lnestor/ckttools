@@ -18,7 +18,7 @@ def create_ilist(moddef, gate_type, gate_name, output, inputs, add_output_wire=T
     items.append(ilist)
     moddef.items = tuple(items)
 
-    return output
+    return ilist
 
 def create_input(moddef, name):
     last_input_index = find_last_input(moddef)

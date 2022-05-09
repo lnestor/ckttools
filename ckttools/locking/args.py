@@ -8,7 +8,7 @@ def get_insertion_net(moddef, pass_config, prev_pass_data):
         exit(-1)
 
     filters = [get_filter(name, value, pass_config["index"]) for name, value in pass_config["insertion"].items()]
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
 
     for filter_ in filters:
         nets = filter_.filter(moddef, nets, prev_pass_data)
