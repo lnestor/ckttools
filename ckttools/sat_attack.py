@@ -13,12 +13,18 @@ def get_args():
     parser.add_argument("locked", help="The locked verilog file.")
     parser.add_argument("oracle", help="The unlocked verilog file.")
     parser.add_argument("--csv", help="The file to log metrics to.")
+    parser.add_argument("--display-key-elimination", action="store_true", help="Display which keys are eliminated each iteration")
     return parser.parse_args()
 
-def run(locked, oracle):
+def display_key_eliminations(keys):
+    print("Keys eliminated each iteration:\n")
+    for i, iteration in enumerate(keys):
+        print("Iteration %i: %s" % (i, " ".join(iteration)))
+
+def run(locked, oracle, args):
     iterations = 0
     # TODO: how to make this based on the circuit?
-    iteration_data = IterationData([4, 4])
+    iteration_data = IterationData([4, 8])
 
     oracle_runner = CircuitSolver(oracle)
     dip_finder = LegacyDipFinder(locked)
@@ -28,6 +34,7 @@ def run(locked, oracle):
     while dip_finder.can_find_dip():
         dip = dip_finder.get_dip()
         key1, key2 = dip_finder.get_keys()
+
         oracle_output = oracle_runner.solve(dip)
 
         dip_finder.add_constraint(dip, oracle_output)
@@ -39,7 +46,11 @@ def run(locked, oracle):
 
     iteration_data.display()
     key = key_finder.get_key()
-    print("\nKey: %s" % pp(key))
+    print("\nKey: %s\n" % pp(key))
+
+    if args.display_key_elimination:
+        keys = key_finder.keys_eliminated_each_iteration()
+        display_key_eliminations(keys)
 
     # Save data to tmp/sat/last run or something like that
     return iterations
@@ -49,7 +60,7 @@ def main():
     locked = get_moddef_from_verilog(args.locked)
     oracle = get_moddef_from_verilog(args.oracle)
 
-    iterations = run(locked, oracle)
+    iterations = run(locked, oracle, args)
 
     if args.csv is not None:
         with open(args.csv, "a") as f:

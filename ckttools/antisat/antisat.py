@@ -53,5 +53,5 @@ def run(moddef, args):
 
     run_data = {}
     run_data["insertion_net"] = args["insertion_net"]
-    run_data["last_input_index"] = args["start_input_index"] + args["key_bits"] - 1
+    run_data["last_input_index"] = args["start_input_index"] + int((args["key_bits"] / 2) - 1)
     return run_data
