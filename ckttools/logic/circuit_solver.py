@@ -1,11 +1,11 @@
 import copy
 from vast.search import get_ilists, get_output_names
 import z3
-from sat.z3_builder import vast2z3
+from sat.z3_builder import vast2z3_unused
 
 class CircuitSolver:
     def __init__(self, moddef):
-        z3_repr = vast2z3(moddef)
+        z3_repr = vast2z3_unused(moddef)
         self.output_names = moddef.outputs
 
         self.solver = z3.Solver()

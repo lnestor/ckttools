@@ -23,8 +23,10 @@ class ChosenDipFinder:
             return False
 
     def get_dip(self):
-        inputs = self._moddef.primary_inputs[0:self._n]
-        return {input_: val == "1" for input_, val in zip(inputs, self._next)}
+        inputs = self._moddef.primary_inputs
+        dip = {input_: val == "1" for input_, val in zip(inputs[0:self._n], self._next)}
+        falses = {input_: False for input_ in inputs}
+        return {**falses, **dip}
 
     def get_keys(self):
         values = {key: "X" for key in self._moddef.key_inputs}

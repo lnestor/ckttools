@@ -2,8 +2,7 @@ import argparse
 from logic.circuit_solver import CircuitSolver
 from sat.dips.dip_finder_factory import DipFinderFactory
 from sat.iteration_data import IterationData
-from sat.key_finder import KeyFinder
-from sat.legacy_key_finder import LegacyKeyFinder
+from sat.keys.default_key_finder import DefaultKeyFinder
 from sat.pretty_print import pp
 from vast.moddef import get_moddef_from_verilog
 
@@ -28,7 +27,7 @@ def run(locked, oracle, args):
 
     oracle_runner = CircuitSolver(oracle)
     dip_finder = DipFinderFactory().get(locked, args.dips)
-    key_finder = LegacyKeyFinder(locked)
+    key_finder = DefaultKeyFinder(locked)
 
     print("\nStarting SAT Attack\n")
     while dip_finder.can_find_dip():

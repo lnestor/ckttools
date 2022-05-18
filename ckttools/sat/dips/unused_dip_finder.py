@@ -3,7 +3,7 @@ from .miter import build_miter
 from .model import extract
 from vast.search import get_primary_input_names, get_key_input_names
 import z3
-from .z3_builder import vast2z3
+from .z3_builder import vast2z3_unused
 
 class UnusedDipFinder:
     """A dip finder experience that failed.
@@ -25,7 +25,7 @@ class UnusedDipFinder:
         self.iterations = 0
 
         miter = build_miter(self.moddef)
-        miter_z3 = vast2z3(miter)
+        miter_z3 = vast2z3_unused(miter)
 
         for z3_repr in miter_z3:
             self.solver.add(z3_repr)
@@ -57,8 +57,8 @@ class UnusedDipFinder:
         outputs_half0 = {"%s__half0__iteration%i" % (key, self.iterations): value for key, value in oracle_output.items()}
         outputs_half1 = {"%s__half1__iteration%i" % (key, self.iterations): value for key, value in oracle_output.items()}
 
-        half0_z3 = vast2z3(moddef_half0)
-        half1_z3 = vast2z3(moddef_half1)
+        half0_z3 = vast2z3_unused(moddef_half0)
+        half1_z3 = vast2z3_unused(moddef_half1)
 
         for z3_repr in half0_z3:
             self.solver.add(z3_repr)

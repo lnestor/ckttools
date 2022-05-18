@@ -2,7 +2,7 @@ from ..miter import build_miter
 from ..model import extract
 from util.lazyprop import lazyprop
 import z3
-from ..z3_builder import vast2z3_legacy
+from ..z3_builder import vast2z3_default
 
 class DefaultDipFinder:
     def __init__(self, moddef):
@@ -13,7 +13,7 @@ class DefaultDipFinder:
     def _solver(self):
         s = z3.Solver()
         miter = build_miter(self.moddef)
-        miter_z3 = vast2z3_legacy(miter)
+        miter_z3 = vast2z3_default(miter)
         s.add(miter_z3["diff"] == True)
         return s
 
@@ -37,8 +37,8 @@ class DefaultDipFinder:
         return key1, key2
 
     def add_constraint(self, inputs, oracle_output):
-        half0_z3 = vast2z3_legacy(self.moddef, key_suffix="__half0", input_values=inputs)
-        half1_z3 = vast2z3_legacy(self.moddef, key_suffix="__half1", input_values=inputs)
+        half0_z3 = vast2z3_default(self.moddef, key_suffix="__half0", input_values=inputs)
+        half1_z3 = vast2z3_default(self.moddef, key_suffix="__half1", input_values=inputs)
 
         half0_constraints = [half0_z3[name] == oracle_output[name] for name in half0_z3]
         half1_constraints = [half1_z3[name] == oracle_output[name] for name in half1_z3]

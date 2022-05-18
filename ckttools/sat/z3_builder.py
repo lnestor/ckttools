@@ -1,13 +1,13 @@
 from vast.search import get_ilists, get_ilist_output, get_ilist_inputs, get_ilist_type
 import z3
 
-def vast2z3(moddef):
-    return Z3Builder().build(moddef)
+def vast2z3_unused(moddef):
+    return UnusedZ3Builder().build(moddef)
 
-def vast2z3_legacy(moddef, key_suffix="", input_values={}):
-    return LegacyZ3Builder(key_suffix=key_suffix, input_values=input_values).build(moddef)
+def vast2z3_default(moddef, key_suffix="", input_values={}):
+    return DefaultZ3Builder(key_suffix=key_suffix, input_values=input_values).build(moddef)
 
-class Z3Builder:
+class UnusedZ3Builder:
     def __init__(self):
         self.z3_repr = {}
 
@@ -64,7 +64,7 @@ class Z3Builder:
 
         return fanin
 
-class LegacyZ3Builder:
+class DefaultZ3Builder:
     def __init__(self, key_suffix="", input_values={}):
         self.z3_repr = {}
         self.key_suffix = key_suffix

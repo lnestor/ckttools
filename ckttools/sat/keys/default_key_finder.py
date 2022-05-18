@@ -1,9 +1,9 @@
-from .model import extract
-from .pretty_print import pp
+from ..model import extract
+from ..pretty_print import pp
 import z3
-from .z3_builder import vast2z3_legacy
+from ..z3_builder import vast2z3_default
 
-class LegacyKeyFinder:
+class DefaultKeyFinder:
     def __init__(self, moddef):
         self.moddef = moddef
         self.solver = z3.Solver()
@@ -18,7 +18,7 @@ class LegacyKeyFinder:
     def add_constraint(self, inputs, oracle_output):
         self.constraints.append((inputs, oracle_output))
 
-        moddef_z3 = vast2z3_legacy(self.moddef, input_values=inputs)
+        moddef_z3 = vast2z3_default(self.moddef, input_values=inputs)
         constraint = [moddef_z3[name] == oracle_output[name] for name in moddef_z3]
         self.solver.add(*constraint)
 
@@ -32,7 +32,7 @@ class LegacyKeyFinder:
             dip, oracle_output = constraint
 
             solver = z3.Solver()
-            moddef_z3 = vast2z3_legacy(self.moddef, input_values=dip)
+            moddef_z3 = vast2z3_default(self.moddef, input_values=dip)
             z3_constraint = [moddef_z3[name] != oracle_output[name] for name in moddef_z3]
             solver.add(z3.Or(*z3_constraint))
 

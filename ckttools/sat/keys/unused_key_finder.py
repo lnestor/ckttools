@@ -3,7 +3,7 @@ from .model import extract
 import z3
 from .z3_builder import vast2z3
 
-class KeyFinder:
+class UnusedKeyFinder:
     def __init__(self, moddef):
         self.moddef = moddef
         self.solver = z3.Solver()
