@@ -4,7 +4,9 @@ def pp(bits, key=None):
     for name in sorted(bits, key=key):
         if bits[name] == True:
             bitstr += "1"
-        else:
+        elif bits[name] == False:
             bitstr += "0"
+        else:
+            bitstr += "X"
 
     return bitstr

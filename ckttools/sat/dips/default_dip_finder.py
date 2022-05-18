@@ -23,7 +23,7 @@ class DefaultDipFinder:
 
     def get_dip(self):
         if self.model is None:
-            self.model = self.solver.model()
+            self.model = self._solver.model()
 
         return extract(self.model, self.moddef.primary_inputs, completion=True)
 

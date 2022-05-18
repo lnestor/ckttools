@@ -24,13 +24,14 @@ class ChosenDipFinder:
 
     def get_dip(self):
         inputs = self._moddef.primary_inputs[0:self._n]
-        return {input_: val for input_, val in zip(inputs, self._next)}
+        return {input_: val == "1" for input_, val in zip(inputs, self._next)}
 
     def get_keys(self):
-        string = "X" * len(self._moddef.key_inputs)
-        return (string, string)
+        values = {key: "X" for key in self._moddef.key_inputs}
+        return (values, values)
 
-    def add_constraint(self):
+    def add_constraint(self, a, b):
+        # No need to do anything
         return
 
 

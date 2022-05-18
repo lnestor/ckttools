@@ -46,24 +46,32 @@ def test_get_inputs_returns_specified_dips_with_one_liner(moddef, tmp_path):
     dip_finder = ChosenDipFinder(moddef, dip_file)
     dip_finder.can_find_dip()
     dips = dip_finder.get_dip()
-    assert dips["G1"] == "0"
-    assert dips["G2"] == "0"
+    assert dips["G1"] == False
+    assert dips["G2"] == False
 
     dip_finder.can_find_dip()
     dips = dip_finder.get_dip()
-    assert dips["G1"] == "0"
-    assert dips["G2"] == "1"
+    assert dips["G1"] == False
+    assert dips["G2"] == True
 
     dip_finder.can_find_dip()
     dips = dip_finder.get_dip()
-    assert dips["G1"] == "1"
-    assert dips["G2"] == "0"
+    assert dips["G1"] == True
+    assert dips["G2"] == False
 
     dip_finder.can_find_dip()
     dips = dip_finder.get_dip()
-    assert dips["G1"] == "1"
-    assert dips["G2"] == "1"
+    assert dips["G1"] == True
+    assert dips["G2"] == True
 
 def test_get_keys_returns_dummy(moddef):
     dip_finder = ChosenDipFinder(moddef, "dip_file")
-    assert dip_finder.get_keys() == ("XXXX", "XXXX")
+    keys1, keys2 = dip_finder.get_keys()
+    assert keys1["K1"] == "X"
+    assert keys1["K2"] == "X"
+    assert keys1["K3"] == "X"
+    assert keys1["K4"] == "X"
+    assert keys2["K1"] == "X"
+    assert keys2["K2"] == "X"
+    assert keys2["K3"] == "X"
+    assert keys2["K4"] == "X"
