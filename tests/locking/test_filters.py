@@ -1,7 +1,8 @@
 import pytest
 from pyverilog.vparser.parser import parse
 from ckttools.locking.filters import get_filter
-from ckttools.vast.search import get_net_names, get_moddef
+from ckttools.vast.search import get_net_names
+from ckttools.vast.moddef import get_moddef
 
 VERILOG = """
 module test_module(in1, in2, in3, in4, out1, out2, keyIn0_0);
@@ -28,7 +29,7 @@ def moddef():
 
 def test_unknown_filter(moddef, capfd):
     filter_ = get_filter("other", None, 0)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
 
     out, err = capfd.readouterr()
     assert out == "WARNING: unknown insertion filter other\n"
@@ -36,7 +37,7 @@ def test_unknown_filter(moddef, capfd):
 
 def test_filter_with_no_valid_nets(capfd, moddef):
     filter_ = get_filter("net-name", "other", 0)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         filter_.filter(moddef, nets, {})
@@ -48,25 +49,25 @@ def test_filter_with_no_valid_nets(capfd, moddef):
 
 def test_net_type_filter_output(moddef):
     filter_ = get_filter("net-type", "output", 0)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
 
     assert filter_.filter(moddef, nets, {}) == ["out1", "out2"]
 
 def test_net_type_filter_output_adjacent_non_unary(moddef):
     filter_ = get_filter("net-type", "output-adjacent-non-unary", 0)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
 
     assert filter_.filter(moddef, nets, {}) == ["w1"]
 
 def test_net_type_filter_output_adjacent_non_unary_input(moddef):
     filter_ = get_filter("net-type", "output-adjacent-non-unary-input", 0)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
 
     assert filter_.filter(moddef, nets, {}) == ["in3", "w3"]
 
 def test_net_type_filter_previous(moddef):
     filter_ = get_filter("net-type", "previous", 1)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
     prev_pass_data = [{"insertion_net": "w2"}]
 
     assert filter_.filter(moddef, nets, prev_pass_data) == ["w2"]
@@ -82,34 +83,34 @@ def test_net_type_filter_other(moddef, capfd):
 
 def test_net_name_filter(moddef):
     filter_ = get_filter("net-name", "w1", 0)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
 
     assert filter_.filter(moddef, nets, {}) == ["w1"]
 
 def test_interference_filter_type_none(moddef):
     filter_ = get_filter("interference", {"type": "none", "passes": [0]}, 1)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
     prev_pass_data = [{"insertion_net": "w2"}]
 
     assert filter_.filter(moddef, nets, prev_pass_data) == ["in1", "out1"]
 
 def test_interference_filter_type_none_multiple_passes(moddef):
     filter_ = get_filter("interference", {"type": "none", "passes": [0, 1]}, 2)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
     prev_pass_data = [{"insertion_net": "w2"}, {"insertion_net": "w3"}]
 
     assert filter_.filter(moddef, nets, prev_pass_data) == ["in1", "out1"]
 
 def test_interference_filter_type_indirect(moddef):
     filter_ = get_filter("interference", {"type": "indirect", "passes": [0]}, 1)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
     prev_pass_data = [{"insertion_net": "w3"}]
 
     assert filter_.filter(moddef, nets, prev_pass_data) == ["in3", "in4"]
 
 def test_interference_filter_type_indirect_with_distance(moddef):
     filter_ = get_filter("interference", {"type": "indirect", "passes": [0], "distance": 1}, 1)
-    nets = get_net_names(moddef)
+    nets = moddef.net_names
     prev_pass_data = [{"insertion_net": "w3"}]
 
     assert filter_.filter(moddef, nets, prev_pass_data) == ["in4"]

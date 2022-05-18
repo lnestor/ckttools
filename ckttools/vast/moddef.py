@@ -2,14 +2,17 @@ from pyverilog.vparser.parser import parse
 from util.lazyprop import lazyprop
 from vast.create import create_input, create_ilist, create_wire
 from vast.modify import rename_ilist_output
-from vast.search import get_output_names, get_key_input_names, get_primary_input_names, get_wire_names, get_ilists, get_ilist_output, get_input_names, get_net_names
+from vast.search import get_output_names, get_key_input_names, get_primary_input_names, get_wire_names, get_ilists, get_ilist_output, get_input_names, get_net_names, get_ilists_from_input
 
 def get_ast(verilog):
     ast, _ = parse([verilog], debug=False)
     return ast
 
+def get_moddef_no_wrapper(ast):
+    return ast.children()[0].children()[0]
+
 def get_moddef(ast):
-    return ModuleDefWrapper(ast.children()[0].children()[0])
+    return ModuleDefWrapper(get_moddef_no_wrapper(ast))
 
 def get_moddef_from_verilog(verilog):
     ast, _ = parse([verilog], debug=False)
@@ -50,6 +53,9 @@ class ModuleDefWrapper:
 
     def get_ilist(self, output):
         return self.ilist_map[output]
+
+    def get_ilists_from_input(self, input_):
+        return get_ilists_from_input(self.moddef, input_)
 
     def is_ilist(self, output):
         return output in self.ilist_map

@@ -1,4 +1,5 @@
 from ckttools.logic.circuit_solver import *
+from ckttools.vast.moddef import get_moddef_from_verilog
 
 VERILOG = """
 module test_module(in1, in2, in3, in4, out1, out2);
@@ -16,7 +17,7 @@ endmodule
 """
 
 def test_solve():
-    solver = CircuitSolver(VERILOG)
+    solver = CircuitSolver(get_moddef_from_verilog(VERILOG))
     inputs = {"in1": True, "in2": True, "in3": True, "in4": True}
     solution = solver.solve(inputs)
 

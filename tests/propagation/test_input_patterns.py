@@ -1,6 +1,6 @@
 from ckttools.propagation.input_patterns import get_input_patterns
 from ckttools.keygates.metadata import parse_metadata
-from ckttools.vast.search import get_moddef_from_verilog
+from ckttools.vast.moddef import get_moddef_from_verilog
 from tests.fixtures.fixtures import get_fixture_path
 
 def test_get_input_patterns_simple():

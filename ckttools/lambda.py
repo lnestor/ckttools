@@ -5,7 +5,7 @@ import numpy as np
 import probability as prob
 from propagation.measure import measure_propagation_events
 from vast.graph_search import get_key_inputs_from_subcircuit
-from vast.search import get_moddef_from_verilog, get_ilists
+from vast.moddef import get_moddef_from_verilog
 
 DESCRIPTION = "Calculate the minimum number of iterations a SAT attack needs to finish"
 

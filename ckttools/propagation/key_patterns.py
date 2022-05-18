@@ -57,7 +57,7 @@ def get_propagation_events(key_metadata, moddef, pattern_generator, num_samples)
     create_fault_file(fault_filename, [key_metadata["output_net"]])
 
     original_bench = parse_from_moddef(moddef)
-    primary_inputs = get_primary_input_names(moddef)
+    primary_inputs = moddef.primary_inputs
 
     events = Events()
     for i, input_pattern in enumerate(pattern_generator.sample(num_samples)):

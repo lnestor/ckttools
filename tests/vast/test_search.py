@@ -1,6 +1,7 @@
+from ckttools.vast.search import *
+from ckttools.vast.moddef import get_moddef_no_wrapper, get_ast
 import pytest
 from pyverilog.vparser.parser import parse
-from ckttools.vast.search import *
 
 VERILOG = """
 module test_module(in1, in2, in3, in4, out1, out2, keyIn0_0);
@@ -22,8 +23,7 @@ endmodule
 
 @pytest.fixture(scope="module")
 def moddef():
-    ast, _ = parse([VERILOG], debug=False)
-    return get_moddef(ast)
+    return get_moddef_no_wrapper(get_ast(VERILOG))
 
 @pytest.fixture(scope="module")
 def ilist():

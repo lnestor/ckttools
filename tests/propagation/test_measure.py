@@ -1,6 +1,6 @@
 from ckttools.keygates.metadata import parse_metadata
 from ckttools.propagation.measure import measure_propagation_events
-from ckttools.vast.search import get_moddef_from_verilog
+from ckttools.vast.moddef import get_moddef_from_verilog
 from tests.fixtures.fixtures import get_benchmark_path
 
 def test_measure_propagation_events_functional_sarlock():

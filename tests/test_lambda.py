@@ -3,7 +3,7 @@ import pytest
 
 from ckttools.keygates.metadata import parse_metadata
 lambda_ = importlib.import_module("ckttools.lambda")
-from ckttools.vast.search import get_moddef_from_verilog
+from ckttools.vast.moddef import get_moddef_from_verilog
 from tests.fixtures.fixtures import get_benchmark_path
 
 @pytest.mark.skip

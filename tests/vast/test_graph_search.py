@@ -1,6 +1,7 @@
 import pytest
+from pyverilog.vparser.parser import parse
 from vast.graph_search import get_key_inputs_from_subcircuit
-from vast.search import get_moddef_from_verilog
+from vast.moddef import get_moddef_from_verilog
 
 VERILOG = """
 module example(in1, in2, in3, out1, keyIn0_0);

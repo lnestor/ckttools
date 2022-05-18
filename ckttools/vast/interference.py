@@ -10,7 +10,7 @@ def find_interfering_nets(moddef, type_, nets, hops=-1):
         raise
 
 def _indirect(moddef, nets, specified_hops):
-    all_outputs = get_output_names(moddef)
+    all_outputs = moddef.outputs
     nets_ahead = set()
     nets_behind = set()
     interfering_outputs = set()
@@ -40,7 +40,7 @@ def _indirect(moddef, nets, specified_hops):
         return indirect_nets
 
 def _none(moddef, nets):
-    all_outputs = get_output_names(moddef)
+    all_outputs = moddef.outputs
     interfering_outputs = set()
 
     for interfering_net in nets:
@@ -52,5 +52,5 @@ def _none(moddef, nets):
         dfs_nets, _ = dfs(moddef, output)
         interfering_nets.update(dfs_nets)
 
-    all_nets = get_net_names(moddef)
+    all_nets = moddef.net_names
     return [n for n in all_nets if n not in interfering_nets]

@@ -3,11 +3,10 @@ import probability as prob
 from vast.search import get_ilist_output, get_ilist_type, get_ilist_inputs, try_get_ilist_from_output
 
 def _calculate(moddef, net):
-    ilist = try_get_ilist_from_output(moddef, net)
-
-    if ilist is None:
+    if not moddef.is_ilist(net):
         return 0.5
 
+    ilist = moddef.get_ilist(net)
     type_ = get_ilist_type(ilist)
     input_probs = [_calculate(moddef, input_) for input_ in get_ilist_inputs(ilist)]
 

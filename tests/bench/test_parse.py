@@ -1,5 +1,5 @@
 from ckttools.bench.parse import parse_from_moddef, parse_from_verilog
-from ckttools.vast.search import get_moddef_from_verilog
+from ckttools.vast.moddef import get_moddef_from_verilog
 
 VERILOG = """
 module sample(in1, in2, out1);

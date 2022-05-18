@@ -8,22 +8,21 @@ from vast.search import (
     get_ilist_inputs,
     get_ilist_type
 )
+from vast.moddef import get_moddef_from_verilog
 
 def parse_from_verilog(filename):
-    ast, _ = parse([filename], debug=False)
-    moddef = ast.children()[0].children()[0]
-    return parse_from_moddef(moddef)
+    return parse_from_moddef(get_moddef_from_verilog(filename))
 
 def parse_from_moddef(moddef):
-    bench = Bench(moddef.name)
+    bench = Bench(moddef.name())
 
-    for input_name in get_input_names(moddef):
+    for input_name in moddef.inputs:
         bench.add_input(input_name)
 
-    for output_name in get_output_names(moddef):
+    for output_name in moddef.outputs:
         bench.add_output(output_name)
 
-    for ilist in get_ilists(moddef):
+    for ilist in moddef.ilists:
         output = get_ilist_output(ilist)
         inputs = get_ilist_inputs(ilist)
         type_ = get_ilist_type(ilist)

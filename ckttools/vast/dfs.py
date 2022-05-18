@@ -18,11 +18,12 @@ def dfs_condition(moddef, start, cond):
     return _dfs_backwards_cond(moddef, start, visited, cond)
 
 def _dfs_backwards_cond(moddef, net, visited, cond):
-    ilist = try_get_ilist_from_output(moddef, net)
 
-    if ilist is None:
+    if not moddef.is_ilist(net):
         return None
-    elif cond(ilist):
+
+    ilist = moddef.get_ilist(net)
+    if cond(ilist):
         return net
 
     inputs = get_ilist_inputs(ilist)
@@ -39,7 +40,7 @@ def _dfs_backwards_cond(moddef, net, visited, cond):
     return None
 
 def _dfs_forwards(moddef, net, visited, hops):
-    ilists = get_ilists_from_input(moddef, net)
+    ilists = moddef.get_ilists_from_input(net)
     outputs = set([get_ilist_output(i) for i in ilists])
 
     if len(outputs) == 0:
@@ -53,12 +54,12 @@ def _dfs_forwards(moddef, net, visited, hops):
             _dfs_forwards(moddef, output, visited, hops + 1)
 
 def _dfs_backwards(moddef, net, visited, hops):
-    ilist = try_get_ilist_from_output(moddef, net)
     visited[net] = hops
 
-    if ilist is None:
+    if not moddef.is_ilist(net):
         return
 
+    ilist = moddef.get_ilist(net)
     inputs = get_ilist_inputs(ilist)
 
     for i in inputs:

@@ -13,7 +13,7 @@ def cleanup(*filenames):
 
 def create_oracle_bench_file(moddef, bench_filename, metadata):
     bench = parse_from_moddef(moddef)
-    key_inputs = get_key_input_names(moddef)
+    key_inputs = moddef.key_inputs
     bench.remove_inputs([input_ for input_ in key_inputs if input_ not in metadata["non_flip_key_inputs"]])
 
     for key_gate_name in metadata["key_gates"]:
