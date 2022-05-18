@@ -5,7 +5,18 @@ from vast.search import get_primary_input_names, get_key_input_names
 import z3
 from .z3_builder import vast2z3
 
-class DipFinder:
+class UnusedDipFinder:
+    """A dip finder experience that failed.
+
+    This class is unused because it is very slow.
+    It attempted to not have to rebuilt the entire z3
+    tree of each output each iteration by instead just
+    adding each gate as a new constraint.
+
+    It is slow for several reasons, but it may not be
+    the SAT solving time. It is likely slow because of
+    copying the moddef.
+    """
     def __init__(self, moddef):
         self.moddef = moddef
         self.primary_inputs = moddef.primary_inputs
