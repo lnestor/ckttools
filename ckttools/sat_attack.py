@@ -23,6 +23,9 @@ def display_key_eliminations(keys):
 def run(locked, oracle, args):
     iterations = 0
     # TODO: how to make this based on the circuit?
+    #       probably just need metadata unless I do a whole circuit analysis
+    #       circuit analysis wouldn't be too hard if the key gates and
+    #       integration nodes are named well
     iteration_data = IterationData([4,4,4])
 
     oracle_runner = CircuitSolver(oracle)

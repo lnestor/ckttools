@@ -64,6 +64,31 @@ def test_get_inputs_returns_specified_dips_with_one_liner(moddef, tmp_path):
     assert dips["G1"] == True
     assert dips["G2"] == True
 
+def test_get_keys_returns_false_for_unspecified_inputs(moddef, tmp_path):
+    dip_file = tmp_path / "dips.txt"
+    dip_file.write_text(DIPS)
+
+    dip_finder = ChosenDipFinder(moddef, dip_file)
+    dip_finder.can_find_dip()
+    dips = dip_finder.get_dip()
+    assert dips["G3"] == False
+    assert dips["G4"] == False
+
+    dip_finder.can_find_dip()
+    dips = dip_finder.get_dip()
+    assert dips["G3"] == False
+    assert dips["G4"] == False
+
+    dip_finder.can_find_dip()
+    dips = dip_finder.get_dip()
+    assert dips["G3"] == False
+    assert dips["G4"] == False
+
+    dip_finder.can_find_dip()
+    dips = dip_finder.get_dip()
+    assert dips["G3"] == False
+    assert dips["G4"] == False
+
 def test_get_keys_returns_dummy(moddef):
     dip_finder = ChosenDipFinder(moddef, "dip_file")
     keys1, keys2 = dip_finder.get_keys()
