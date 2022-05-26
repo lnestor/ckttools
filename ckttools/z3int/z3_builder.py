@@ -59,6 +59,8 @@ class UnusedZ3Builder:
         for i, input_ in enumerate(inputs):
             if input_ == 0 or input_ == 1:
                 fanin[i] = input_ == 1
+            elif isinstance(input_, bool):
+                fanin[i] = input_
             else:
                 fanin[i] = z3.Bool(input_)
 
@@ -87,7 +89,9 @@ class DefaultZ3Builder:
 
         fanin = [None] * len(inputs)
         for i, input_ in enumerate(inputs):
-            if moddef.is_ilist(input_):
+            if isinstance(input_, bool):
+                fanin[i] = input_
+            elif moddef.is_ilist(input_):
                 fanin[i] = self._build_ilist(moddef, input_)
             elif moddef.is_input(input_):
                 fanin[i] = self._build_input(input_)
