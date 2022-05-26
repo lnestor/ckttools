@@ -92,7 +92,7 @@ class DefaultZ3Builder:
             elif moddef.is_input(input_):
                 fanin[i] = self._build_input(input_)
             else:
-                fanin[i] = name == 1
+                fanin[i] = input_ == 1
 
         if type_ == "and":
             repr_ = z3.And(*fanin)

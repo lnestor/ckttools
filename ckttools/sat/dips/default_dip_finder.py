@@ -1,8 +1,9 @@
-from ..miter import build_miter
+from miter.options import MiterOptions
+from miter.builder import MiterBuilder
 from ..model import extract
 from util.lazyprop import lazyprop
 import z3
-from ..z3_builder import vast2z3_default
+from z3int.z3_builder import vast2z3_default
 
 class DefaultDipFinder:
     def __init__(self, moddef):
@@ -12,7 +13,14 @@ class DefaultDipFinder:
     @lazyprop
     def _solver(self):
         s = z3.Solver()
-        miter = build_miter(self.moddef)
+
+        options = MiterOptions("miter") \
+                .half0(self.moddef) \
+                .no_suffix_on_inputs(self.moddef.primary_inputs) \
+                .copy_to_half1()
+        miter = MiterBuilder().build(options)
+
+        # miter = build_miter(self.moddef)
         miter_z3 = vast2z3_default(miter)
         s.add(miter_z3["diff"] == True)
         return s

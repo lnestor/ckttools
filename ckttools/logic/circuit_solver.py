@@ -1,7 +1,7 @@
 import copy
 from vast.search import get_ilists, get_output_names
 import z3
-from sat.z3_builder import vast2z3_unused
+from z3int.z3_builder import vast2z3_unused
 
 class CircuitSolver:
     def __init__(self, moddef):

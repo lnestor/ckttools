@@ -1,7 +1,7 @@
 from ..model import extract
 from ..pretty_print import pp
 import z3
-from ..z3_builder import vast2z3_default
+from z3int.z3_builder import vast2z3_default
 
 class DefaultKeyFinder:
     def __init__(self, moddef):

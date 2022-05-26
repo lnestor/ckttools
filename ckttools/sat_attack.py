@@ -49,6 +49,10 @@ def run(locked, oracle, args):
     key = key_finder.get_key()
     print("\nKey: %s\n" % pp(key))
 
+    # Check if key is correct
+    # if args.check_correctness:
+        # raise
+
     if args.display_key_elimination:
         keys = key_finder.keys_eliminated_each_iteration()
         display_key_eliminations(keys)
