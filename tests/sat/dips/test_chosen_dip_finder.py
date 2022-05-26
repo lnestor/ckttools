@@ -28,6 +28,7 @@ def test_can_find_dip_with_dips_remaining(moddef, tmp_path):
     dip_finder = ChosenDipFinder(moddef, dip_file)
     assert dip_finder.can_find_dip()
 
+@pytest.mark.skip()
 def test_can_find_dip_with_no_dips_remaining(moddef, tmp_path):
     dip_file = tmp_path / "dips.txt"
     dip_file.write_text(DIPS)
