@@ -14,6 +14,11 @@ def get_args():
     return parser.parse_args()
 
 def map_keybits(moddef, key):
+    if(len(moddef.key_inputs) != len(key)):
+        print("Error: provided key is not correct length")
+        print("       Expected %i bits, got %i" % (len(moddef.key_inputs), len(key)))
+        exit(-1)
+
     return {input_: int(value) for input_, value in zip(moddef.key_inputs, key)}
 
 def main():
