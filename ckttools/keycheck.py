@@ -1,5 +1,6 @@
 import argparse
 from logic.key_correctness import check_key_correctness
+import os
 from vast.moddef import get_moddef_from_verilog
 
 def get_args():
@@ -17,6 +18,13 @@ def map_keybits(moddef, key):
 
     return {input_: int(value) for input_, value in zip(moddef.key_inputs, key)}
 
+def keystr(string):
+    if os.path.isfile(string):
+        with open(string) as f:
+            return f.read().strip()
+    else:
+        return string
+
 def main():
     args = get_args()
 
@@ -24,7 +32,7 @@ def main():
     unlocked_moddef = get_moddef_from_verilog(args.unlocked)
 
     primary_inputs = locked_moddef.primary_inputs
-    keys = map_keybits(locked_moddef, args.key)
+    keys = map_keybits(locked_moddef, keystr(args.key))
 
     check_key_correctness(locked_moddef, unlocked_moddef, keys)
 
