@@ -1,5 +1,6 @@
 import argparse
 from logic.circuit_solver import CircuitSolver
+from logic.key_correctness import check_key_correctness
 from sat.dips.dip_finder_factory import DipFinderFactory
 from sat.iteration_data import IterationData
 from sat.keys.default_key_finder import DefaultKeyFinder
@@ -11,6 +12,8 @@ def get_args():
     parser.add_argument("locked", help="The locked verilog file.")
     parser.add_argument("oracle", help="The unlocked verilog file.")
     parser.add_argument("--csv", help="The file to log metrics to.")
+    parser.add_argument("--check-correctness", action="store_true", help="Check the calculated key is correct")
+    parser.add_argument("--iteration_data", action="store_true", help="Display inputs/keys for each iteration")
     parser.add_argument("--display-key-elimination", action="store_true", help="Display which keys are eliminated each iteration")
     parser.add_argument("--dips", help="The file with DIPs to run")
     return parser.parse_args()
@@ -45,13 +48,14 @@ def run(locked, oracle, args):
         iteration_data.add_iteration(dip, key1, key2, oracle_output)
         print("# Iterations: %i" % iterations)
 
-    iteration_data.display()
     key = key_finder.get_key()
     print("\nKey: %s\n" % pp(key))
 
-    # Check if key is correct
-    # if args.check_correctness:
-        # raise
+    if args.iteration_data:
+        iteration_data.display()
+
+    if args.check_correctness:
+        check_key_correctness(locked, oracle, key)
 
     if args.display_key_elimination:
         keys = key_finder.keys_eliminated_each_iteration()
