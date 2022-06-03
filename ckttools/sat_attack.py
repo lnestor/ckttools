@@ -13,7 +13,7 @@ def get_args():
     parser.add_argument("oracle", help="The unlocked verilog file.")
     parser.add_argument("--csv", help="The file to log metrics to.")
     parser.add_argument("--check-correctness", action="store_true", help="Check the calculated key is correct")
-    parser.add_argument("--iteration_data", action="store_true", help="Display inputs/keys for each iteration")
+    parser.add_argument("--iteration-data", action="store_true", help="Display inputs/keys for each iteration")
     parser.add_argument("--display-key-elimination", action="store_true", help="Display which keys are eliminated each iteration")
     parser.add_argument("--dips", help="The file with DIPs to run")
     return parser.parse_args()
@@ -29,7 +29,7 @@ def run(locked, oracle, args):
     #       probably just need metadata unless I do a whole circuit analysis
     #       circuit analysis wouldn't be too hard if the key gates and
     #       integration nodes are named well
-    iteration_data = IterationData([4,4,4])
+    iteration_data = IterationData([4,4])
 
     oracle_runner = CircuitSolver(oracle)
     dip_finder = DipFinderFactory().get(locked, args.dips)

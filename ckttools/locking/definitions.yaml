@@ -1,8 +1,8 @@
 ---
 locking-types:
-  # - name: Sarlock
-  #   key: sarlock
-  #   module: sarlock.external
+  - name: Sarlock
+    key: sarlock
+    module: sarlock.external
   # - name: Multiplexer
   #   key: multiplexer
   #   module: multiplexer.external
