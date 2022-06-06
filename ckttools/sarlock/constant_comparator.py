@@ -1,4 +1,4 @@
-def create_const_comparator(moddef, inputs, pattern, pass_index):
+def create_const_comparator(moddef, inputs, pattern, pass_index, inverted=False):
     """Creates a comparator that compares a pattern to the inputs
 
     If the inputs match the pattern, the output of the comparator is 1.
@@ -33,6 +33,10 @@ def create_const_comparator(moddef, inputs, pattern, pass_index):
         moddef.create_ilist("xnor", instance_name, output_name, input_pair)
         xnor_outputs[i] = output_name
 
-    output_name = "const_comp_nand_%i" % pass_index
-    moddef.create_ilist("nand", "CONST_COMP_NAND_%i" % pass_index, output_name, xnor_outputs)
+    if inverted:
+        output_name = "const_comp_nand_%i" % pass_index
+        moddef.create_ilist("nand", "CONST_COMP_NAND_%i" % pass_index, output_name, xnor_outputs)
+    else:
+        output_name = "const_comp_and_%i" % pass_index
+        moddef.create_ilist("and", "CONST_COMP_AND_%i" % pass_index, output_name, xnor_outputs)
     return output_name

@@ -16,3 +16,6 @@ locking-types:
   #   key: camouflage-replace
   #   module: camouflage.external
 
+  - name: TTLock
+    key: ttlock
+    module: ttlock.external

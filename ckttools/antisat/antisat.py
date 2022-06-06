@@ -1,4 +1,3 @@
-import easylock
 from locking.keys import create_keys
 import locking.globals as GLOBALS
 
