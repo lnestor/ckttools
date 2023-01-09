@@ -29,7 +29,7 @@ def run(locked, oracle, args):
     #       probably just need metadata unless I do a whole circuit analysis
     #       circuit analysis wouldn't be too hard if the key gates and
     #       integration nodes are named well
-    iteration_data = IterationData([4,4])
+    iteration_data = IterationData([4, 4, 4])
 
     oracle_runner = CircuitSolver(oracle)
     dip_finder = DipFinderFactory().get(locked, args.dips)
