@@ -24,6 +24,8 @@ def _calculate(moddef, net):
         return 1 - prob.xor(input_probs)
     elif type_ == "not":
         return 1 - input_probs[0]
+    elif type_ == "buf":
+        return input_probs[0]
     else:
         raise RuntimeError("p(flip) calculation: unknown gate type " + type_)
 

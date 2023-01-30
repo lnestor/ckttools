@@ -1,4 +1,4 @@
-from ckttools.vast.group import find_interference_groups
+from ckttools.vast.group import find_interference_groups, find_directly_interfering_groups
 from ckttools.vast.moddef import get_moddef_from_verilog
 import pytest
 
@@ -45,4 +45,14 @@ def test_find_interference_groups_returns_correct_groups(moddef):
     assert set(groups[2]) == set(["KeyGate3"])
     assert set(groups[3]) == set(["KeyGate4", "KeyGate5"])
     assert set(groups[4]) == set(["KeyGate6", "KeyGate7", "KeyGate8"])
+
+def test_find_directly_interfering_groups(moddef):
+    groups = find_directly_interfering_groups(moddef)
+
+    assert groups[0] == ["KeyGate1"]
+    assert groups[1] == ["KeyGate2"]
+    assert groups[2] == ["KeyGate3"]
+    assert groups[3] == ["KeyGate5", "KeyGate4"]
+    assert groups[4] == ["KeyGate7", "KeyGate6"]
+    assert groups[5] == ["KeyGate8", "KeyGate6"]
 

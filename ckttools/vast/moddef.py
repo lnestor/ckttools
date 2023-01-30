@@ -48,6 +48,10 @@ class ModuleDefWrapper:
         return get_ilists(self.moddef)
 
     @lazyprop
+    def keygates(self):
+        return [ilist for ilist in get_ilists(self.moddef) if self.is_key_gate(ilist)]
+
+    @lazyprop
     def net_names(self):
         return get_net_names(self.moddef)
 
@@ -67,6 +71,10 @@ class ModuleDefWrapper:
         ilist = self.get_ilist(net_name)
         inputs = get_ilist_inputs(ilist)
         return any([i in self.key_inputs for i in inputs])
+
+    def is_key_gate(self, ilist):
+        inputs = get_ilist_inputs(ilist)
+        return any(["signal_from_circuit" in i for i in inputs])
 
     def name(self):
         return self.moddef.name

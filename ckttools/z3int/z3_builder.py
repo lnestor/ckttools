@@ -20,7 +20,7 @@ class UnusedZ3Builder:
     def _build_ilist(self, ilist):
         output = get_ilist_output(ilist)
         inputs = get_ilist_inputs(ilist)
-        type_ = get_ilist_type(ilist)
+        type_ = get_ilist_type(ilist).lower()
 
         fanin = self._get_fanin(inputs)
 
@@ -85,7 +85,7 @@ class DefaultZ3Builder:
         ilist = moddef.get_ilist(name)
         output = get_ilist_output(ilist)
         inputs = get_ilist_inputs(ilist)
-        type_ = get_ilist_type(ilist)
+        type_ = get_ilist_type(ilist).lower()
 
         fanin = [None] * len(inputs)
         for i, input_ in enumerate(inputs):
