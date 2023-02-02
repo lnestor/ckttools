@@ -2,15 +2,7 @@ from itertools import combinations
 import numpy as np
 
 def or_(probs):
-    parity = 1
-    prob = 0
-
-    for i in range(len(probs)):
-        combos = list(combinations(probs, i + 1))
-        inter_prob = [np.prod(combo) for combo in combos]
-        prob += parity * sum(inter_prob)
-        parity *= -1
-
+    prob = 1 - np.prod([(1 - p) for p in probs])
     return prob
 
 def xor(probs):
