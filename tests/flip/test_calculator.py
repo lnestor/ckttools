@@ -10,7 +10,7 @@ def moddef():
 
 def test_calculate_flip_probability_input(moddef):
     create_ilist(moddef, "and", "AND0", "output", ["input1", "input2"])
-    prob = calculate_flip_probability(ModuleDefWrapper(moddef), "input")
+    prob = calculate_flip_probability(ModuleDefWrapper(moddef), "input1")
     assert prob == 0.5
 
 def test_calculate_flip_probability_and(moddef):
@@ -68,7 +68,7 @@ def test_calculate_flip_probability_not(moddef):
     prob = calculate_flip_probability(ModuleDefWrapper(moddef), "output")
     assert prob == 0.75
 
-def test_calculate_flip_probability_complx(moddef):
+def test_calculate_flip_probability_complex(moddef):
     create_ilist(moddef, "not", "NOT0", "output", ["mid1"]) # not(.6875) = .3125
     create_ilist(moddef, "xor", "XOR0", "mid1", ["mid2", "mid3"]) # xor(.25, .875) = .6875
     create_ilist(moddef, "or", "OR0", "mid2", ["mid4", "input1"]) # or(.75, .5) = .875
@@ -77,3 +77,12 @@ def test_calculate_flip_probability_complx(moddef):
 
     prob = calculate_flip_probability(ModuleDefWrapper(moddef), "output")
     assert prob == 0.3125
+
+def test_calculate_reconvergent_xor(moddef):
+    create_ilist(moddef, "nand", "NAND0", "y1", ["input1", "input2"])
+    create_ilist(moddef, "nand", "NAND1", "y2", ["input1", "y1"])
+    create_ilist(moddef, "nand", "NAND2", "y3", ["input2", "y1"])
+    create_ilist(moddef, "nand", "NAND3", "output", ["y2", "y3"])
+
+    prob = calculate_flip_probability(ModuleDefWrapper(moddef), "output")
+    assert prob == 0.5
