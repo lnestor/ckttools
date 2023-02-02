@@ -74,7 +74,7 @@ class ModuleDefWrapper:
 
     def is_key_gate(self, ilist):
         inputs = get_ilist_inputs(ilist)
-        return any(["signal_from_circuit" in i for i in inputs])
+        return any(["signal_from_circuit" in str(i) for i in inputs])
 
     def name(self):
         return self.moddef.name
