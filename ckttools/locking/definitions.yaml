@@ -19,3 +19,7 @@ locking-types:
   - name: TTLock
     key: ttlock
     module: ttlock.external
+
+  - name: Controllable Parameters
+    key: singlekeycontrol
+    module: singlekeycontrol.external
