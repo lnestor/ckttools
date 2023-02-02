@@ -1,7 +1,7 @@
 import locking.globals as GLOBALS
 from locking.keys import create_keys
-from sarlock.signal_comparator import create_signal_comparator
-from sarlock.constant_comparator import create_const_comparator
+from subcircuits.signal_comparator import create_signal_comparator
+from subcircuits.constant_comparator import create_const_comparator
 
 def create_key_comparator(moddef, key_inputs, args):
     start_idx = args["start_input_index"]
