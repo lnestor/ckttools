@@ -31,7 +31,6 @@ def _run_direct_interference_dfs(moddef, net_name, group_map):
     group_map[net_name] = groups
     return group_map[net_name]
 
-
 def find_interference_groups(moddef):
     visited = set()
     current_group = set()

@@ -70,7 +70,8 @@ class ModuleDefWrapper:
     def is_key_gate_output(self, net_name):
         ilist = self.get_ilist(net_name)
         inputs = get_ilist_inputs(ilist)
-        return any([i in self.key_inputs for i in inputs])
+        return any(["signal_from_circuit" in i for i in inputs])
+        # return any([i in self.key_inputs for i in inputs])
 
     def is_key_gate(self, ilist):
         inputs = get_ilist_inputs(ilist)

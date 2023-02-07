@@ -1,6 +1,7 @@
 import numpy as np
 import sympy
 from vast.search import get_ilist_type, get_ilist_inputs
+import probability as prob
 
 def _get_terms(expr):
     if isinstance(expr, sympy.Mul):
@@ -23,7 +24,6 @@ def _truncate(term):
         return sympy.Mul(*new_factors)
 
     return term
-
 
 def _or(input_exprs):
     return 1 - sympy.Mul(*[1 - i for i in input_exprs])
@@ -73,7 +73,7 @@ def _get_expr(moddef, net, exprs, inputs):
         truncated_terms = [_truncate(term) for term in terms]
         new_expr = sympy.expand(sympy.Add(*truncated_terms))
 
-        exprs[net] = new_expr
+        exprs[net] = expr
 
     return exprs[net]
 
@@ -84,3 +84,30 @@ def calculate_flip_probability(moddef, net):
     subs = [(i, 0.5) for i in inputs]
 
     return exprs[net].subs(subs)
+
+def calculate_flip_probability_independent(moddef, net):
+    if not moddef.is_ilist(net):
+        return 0.5
+
+    ilist = moddef.get_ilist(net)
+    type_ = get_ilist_type(ilist)
+    input_probs = [calculate_flip_probability_independent(moddef, input_) for input_ in get_ilist_inputs(ilist)]
+
+    if type_ == "and":
+        return np.prod(input_probs)
+    elif type_ == "nand":
+        return 1 - np.prod(input_probs)
+    elif type_ == "or":
+        return prob.or_(input_probs)
+    elif type_ == "nor":
+        return 1 - prob.or_(input_probs)
+    elif type_ == "xor":
+        return prob.xor(input_probs)
+    elif type_ == "xnor":
+        return 1 - prob.xor(input_probs)
+    elif type_ == "not":
+        return 1 - input_probs[0]
+    elif type_ == "buf":
+        return input_probs[0]
+    else:
+        raise RuntimeError("p(flip) calculation: unknown gate type " + type_)

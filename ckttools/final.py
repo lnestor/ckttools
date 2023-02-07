@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import yaml
 
-from flip.calculator import calculate_flip_probability
+from flip.calculator import calculate_flip_probability_independent
 from vast.graph_search import get_key_inputs_from_subcircuit
 from vast.moddef import get_moddef_from_verilog
 from vast.search import get_ilist_inputs
@@ -52,7 +52,7 @@ def _choose_locking_type(contents):
 
 def _get_locking_config(path, verilog_filename):
     choices = os.listdir(path)
-    choices = ["config1.yaml", "config2.yaml", "config6.yaml", "config7.yaml", "config8.yaml"]
+    choices = ["config6.yaml"]
     base_config = path + "/" + random.choice(choices)
 
     print("Choosing from %i configuration files..." % len(choices))
@@ -123,7 +123,7 @@ def _measure_single_key_iterations(moddef):
     keygates = moddef.keygates
     key_facing_nets = [get_ilist_inputs(k)[0] for k in keygates]
 
-    flip_probs = [calculate_flip_probability(moddef, n) for n in key_facing_nets]
+    flip_probs = [calculate_flip_probability_independent(moddef, n) for n in key_facing_nets]
     total_key_inputs = [len(get_key_inputs_from_subcircuit(moddef, n)) for n in key_facing_nets]
     incorrect_keys = [_get_incorrect_keys(n, t) for n, t in zip(key_facing_nets, total_key_inputs)]
 

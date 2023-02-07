@@ -33,6 +33,7 @@ def _create_hamming_dist_calc(moddef, key_inputs, args):
 
     xor_gates = _create_hamming_dist_xors(moddef, key_inputs, primary_inputs[start_idx:start_idx + len(key_inputs)])
     adder_outputs = create_adder(moddef, xor_gates, GLOBALS.pass_index)
+    adder_outputs.reverse()
 
     compare_pattern = _create_compare_pattern(args["hamming_distance"], len(adder_outputs))
     compare_output = create_const_comparator(moddef, adder_outputs, compare_pattern, GLOBALS.pass_index)
@@ -40,10 +41,6 @@ def _create_hamming_dist_calc(moddef, key_inputs, args):
     return compare_output
 
 def _create_mask(moddef, key_inputs, incorrect_key_values):
-    # Need to make it so the AND gates are negated and then OR is a NAND
-    # so AND -> OR becomes AND -> NOT -> NAND or NAND -> NAND
-    #
-    # Alternatively, implement directly in prob calculator
     mask = create_mult_const_comparator(moddef, key_inputs, incorrect_key_values, GLOBALS.pass_index)
     return mask
 

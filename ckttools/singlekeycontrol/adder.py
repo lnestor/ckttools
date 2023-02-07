@@ -11,6 +11,8 @@ def _create_half_adder(moddef, A, B, pass_index, stage_index, ha_index):
 
     return sum_output_name, cout_output_name
 
+# TODO: this isn't a true adder, this sums the number of 1s in the signal.
+#       it should be renamed accordingly
 def create_adder(moddef, inputs, pass_index):
     num_stages = len(inputs) - 1
 
